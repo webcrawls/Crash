@@ -2,8 +2,8 @@ package dev.kscott.casino;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import dev.kscott.casino.inject.CommandModule;
 import dev.kscott.casino.inject.PluginModule;
-import dev.kscott.crash.inject.CommandModule;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
