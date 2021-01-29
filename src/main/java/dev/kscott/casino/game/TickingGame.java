@@ -13,6 +13,12 @@ public abstract class TickingGame extends Game {
     private final int tickSpeed;
 
     /**
+     * If false, this game is not running and should not be ticked.
+     * If true, this game is running and should be ticked.
+     */
+    protected boolean running;
+
+    /**
      * Constructs {@link TickingGame}.
      *
      * @param gameId    The id of this {@link TickingGame}.
@@ -26,12 +32,18 @@ public abstract class TickingGame extends Game {
     ) {
         super(gameId, gameType);
         this.tickSpeed = tickSpeed;
+        this.running = false;
     }
 
     /**
      * Runs this game's tick.
      */
     public abstract void runGameTick();
+
+    /**
+     * Starts this game.
+     */
+    public abstract void startGame();
 
     /**
      * @return how fast this game should tick, measured in Minecraft ticks.
