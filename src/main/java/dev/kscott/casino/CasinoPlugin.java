@@ -19,12 +19,13 @@ public class CasinoPlugin extends JavaPlugin {
      */
     private static final String[] DEPRECATED_WARNING = new String[]{
             "This server is running Spigot or CraftBukkit!",
-            "BlueCasino supports these server versions, but",
-            "these server versions are unoptimized and may contain",
-            "unpatched security exploits.",
+            "BlueCasino supports these server versions, support",
+            "may be removed in the future.",
             "",
-            "Support may be removed in the future, it is recommended to",
-            "switch to a modern server such as Paper (https://papermc.io"
+            "These versions may contain unpatched security exploits",
+            "provide worse performance, and other issues.",
+            "",
+            "It is recommended to move to a modern fork such as Paper. (https://papermc.io/)"
     };
 
     /**
