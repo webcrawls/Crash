@@ -29,6 +29,11 @@ public abstract class TickingGame extends Game {
     }
 
     /**
+     * Runs this game's tick.
+     */
+    public abstract void runGameTick();
+
+    /**
      * @return how fast this game should tick, measured in Minecraft ticks.
      */
     public int getTickSpeed() {
