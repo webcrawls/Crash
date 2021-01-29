@@ -2,6 +2,7 @@ package dev.kscott.casino.game.crash;
 
 import dev.kscott.casino.game.GameType;
 import dev.kscott.casino.game.TickingGame;
+import dev.kscott.casino.game.crash.menu.CrashPreGameMenu;
 import dev.kscott.casino.menu.MenuManager;
 import dev.kscott.casino.menu.MenuProvider;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -96,13 +97,6 @@ public class CrashGame extends TickingGame implements MenuProvider {
     }
 
     /**
-     * @return the game's state.
-     */
-    public @NonNull CrashGameState getGameState() {
-        return gameState;
-    }
-
-    /**
      * @return the menu id that should be displayed.
      */
     @Override
@@ -119,5 +113,29 @@ public class CrashGame extends TickingGame implements MenuProvider {
             default:
                 return MenuManager.MT_NONE;
         }
+    }
+
+    /**
+     * Registers menus with {@code menuManager}.
+     *
+     * @param menuManager The {@link MenuManager} to register menus with.
+     */
+    @Override
+    public void registerMenus(final @NonNull MenuManager menuManager) {
+        menuManager.registerMenu(new CrashPreGameMenu(this), GameType.CRASH);
+    }
+
+    /**
+     * @return the game's state.
+     */
+    public @NonNull CrashGameState getGameState() {
+        return gameState;
+    }
+
+    /**
+     * @return the pre-game countdown.
+     */
+    public int getPreGameCountdown() {
+        return preGameCountdown;
     }
 }
