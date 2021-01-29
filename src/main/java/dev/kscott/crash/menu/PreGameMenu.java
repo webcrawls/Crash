@@ -2,18 +2,14 @@ package dev.kscott.crash.menu;
 
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import com.github.stefvanschie.inventoryframework.pane.StaticPane;
-import dev.kscott.crash.CrashPlugin;
 import dev.kscott.crash.config.Config;
 import dev.kscott.crash.config.Lang;
 import dev.kscott.crash.config.MenuConfig;
 import dev.kscott.crash.config.MenuIconData;
-import dev.kscott.crash.game.GameManager;
+import dev.kscott.crash.game.crash.CrashManager;
 import dev.kscott.crash.utils.ItemBuilder;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextReplacementConfig;
-import net.kyori.adventure.text.serializer.bungeecord.BungeeComponentSerializer;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import net.md_5.bungee.api.chat.BaseComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -33,14 +29,14 @@ public class PreGameMenu extends GameMenu {
      */
     public PreGameMenu(
             final @NonNull Player player,
-            final @NonNull GameManager gameManager,
+            final @NonNull CrashManager crashManager,
             final @NonNull Config config,
             final @NonNull Lang lang,
             final @NonNull MenuConfig menuConfig
     ) {
         super(6, lang.s("crash-inventory-title"));
 
-        final int countdown = gameManager.getPreGameCountdown();
+        final int countdown = crashManager.getPreGameCountdown();
 
         final @NonNull MenuIconData menuIcon = menuConfig.getPreGameIconData(countdown);
 
@@ -51,12 +47,12 @@ public class PreGameMenu extends GameMenu {
         if (menuConfig.isPreGameOtherBetsList()) {
             @NonNull List<Component> lore = ItemBuilder.getLore(itemMeta);
 
-            if (gameManager.getBetManager().getBets().size() != 0) {
+            if (crashManager.getBetManager().getBets().size() != 0) {
                 final @NonNull Component header = menuConfig.getOtherBetsListHeader();
 
                 lore.add(header);
 
-                final @NonNull Set<Map.Entry<UUID, Double>> betList = gameManager.getBetManager().getBets().entrySet();
+                final @NonNull Set<Map.Entry<UUID, Double>> betList = crashManager.getBetManager().getBets().entrySet();
 
                 final @NonNull Iterator<Map.Entry<UUID, Double>> betListIterator = betList.iterator();
 

@@ -4,7 +4,7 @@ import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import com.github.stefvanschie.inventoryframework.pane.StaticPane;
 import dev.kscott.crash.config.Lang;
 import dev.kscott.crash.config.MenuConfig;
-import dev.kscott.crash.game.GameManager;
+import dev.kscott.crash.game.crash.CrashManager;
 import dev.kscott.crash.utils.ItemBuilder;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -22,7 +22,7 @@ public class PostGameMenu extends GameMenu {
      */
     public PostGameMenu(
             final @NonNull Player player,
-            final @NonNull GameManager gameManager,
+            final @NonNull CrashManager crashManager,
             final @NonNull Lang lang,
             final @NonNull MenuConfig menuConfig
     ) {
@@ -36,7 +36,7 @@ public class PostGameMenu extends GameMenu {
 
         fgPane.addItem(new GuiItem(
                 new ItemBuilder(Material.RED_STAINED_GLASS_PANE)
-                        .name(Component.text("Crashed @ " + gameManager.getCrashPoint() + "x")
+                        .name(Component.text("Crashed @ " + crashManager.getCrashPoint() + "x")
                                 .decorate(TextDecoration.BOLD)
                                 .color(NamedTextColor.RED)
                                 .decoration(TextDecoration.ITALIC, false)

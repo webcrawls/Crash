@@ -9,8 +9,8 @@ import com.google.inject.Inject;
 import dev.kscott.crash.config.Config;
 import dev.kscott.crash.config.Lang;
 import dev.kscott.crash.exception.NotEnoughBalanceException;
-import dev.kscott.crash.game.CrashProvider;
-import dev.kscott.crash.game.GameManager;
+import dev.kscott.crash.game.crash.CrashProvider;
+import dev.kscott.crash.game.crash.CrashManager;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -39,7 +39,7 @@ public class CrashCommand {
     /**
      * GameManager reference.
      */
-    private final @NonNull GameManager gameManager;
+    private final @NonNull CrashManager crashManager;
 
     /**
      * Holds a List of String to be used for /crash command completions.
@@ -61,13 +61,13 @@ public class CrashCommand {
     public CrashCommand(
             final @NonNull PaperCommandManager<CommandSender> commandManager,
             final @NonNull CrashProvider crashProvider,
-            final @NonNull GameManager gameManager,
+            final @NonNull CrashManager crashManager,
             final @NonNull Lang lang,
             final @NonNull JavaPlugin plugin,
             final @NonNull Config config
     ) {
         this.commandManager = commandManager;
-        this.gameManager = gameManager;
+        this.crashManager = crashManager;
         this.crashProvider = crashProvider;
         this.lang = lang;
         this.audiences = BukkitAudiences.create(plugin);
@@ -117,7 +117,7 @@ public class CrashCommand {
         final @NonNull Optional<String> argumentOptional = context.getOptional("argument");
 
         if (argumentOptional.isEmpty()) {
-            this.gameManager.getMenuManager().showGameMenu((Player) sender);
+            this.crashManager.getMenuManager().showGameMenu((Player) sender);
             return;
         }
 
@@ -136,12 +136,12 @@ public class CrashCommand {
                 return;
             }
 
-            if (this.gameManager.getBetManager().didBet(player)) {
+            if (this.crashManager.getBetManager().didBet(player)) {
                 this.audiences.player(player).sendMessage(lang.c("already-bet"));
                 return;
             }
 
-            this.gameManager.getBetManager().placeBet(player, bet);
+            this.crashManager.getBetManager().placeBet(player, bet);
         } catch (final NumberFormatException ex) {
             this.audiences.player(player).sendMessage(lang.c("not-a-number"));
         } catch (final NotEnoughBalanceException ex) {

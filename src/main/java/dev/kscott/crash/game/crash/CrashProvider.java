@@ -1,4 +1,4 @@
-package dev.kscott.crash.game;
+package dev.kscott.crash.game.crash;
 
 import com.google.common.hash.Hashing;
 import dev.kscott.crash.utils.MathUtils;

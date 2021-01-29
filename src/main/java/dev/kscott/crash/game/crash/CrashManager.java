@@ -1,4 +1,4 @@
-package dev.kscott.crash.game;
+package dev.kscott.crash.game.crash;
 
 import cloud.commandframework.paper.PaperCommandManager;
 import dev.kscott.crash.config.Config;
@@ -16,7 +16,7 @@ import java.util.UUID;
 /**
  * Manages the game state.
  */
-public class GameManager {
+public class CrashManager {
 
     /**
      * JavaPlugin reference.
@@ -76,7 +76,7 @@ public class GameManager {
      * @param config        Config reference.
      * @param lang          Lang reference.
      */
-    public GameManager(
+    public CrashManager(
             final @NonNull JavaPlugin plugin,
             final @NonNull CrashProvider crashProvider,
             final @NonNull PaperCommandManager<CommandSender> commandManager,

@@ -4,8 +4,8 @@ import cloud.commandframework.Command;
 import cloud.commandframework.context.CommandContext;
 import cloud.commandframework.paper.PaperCommandManager;
 import com.google.inject.Inject;
-import dev.kscott.crash.game.CrashProvider;
-import dev.kscott.crash.game.GameManager;
+import dev.kscott.crash.game.crash.CrashProvider;
+import dev.kscott.crash.game.crash.CrashManager;
 import org.bukkit.command.CommandSender;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
@@ -24,7 +24,7 @@ public class CrashAdminCommand {
     /**
      * GameManager reference.
      */
-    private final @NonNull GameManager gameManager;
+    private final @NonNull CrashManager crashManager;
 
     /**
      * Constructs CrashCommand.
@@ -35,10 +35,10 @@ public class CrashAdminCommand {
     public CrashAdminCommand(
             final @NonNull PaperCommandManager<CommandSender> commandManager,
             final @NonNull CrashProvider crashProvider,
-            final @NonNull GameManager gameManager
+            final @NonNull CrashManager crashManager
     ) {
         this.commandManager = commandManager;
-        this.gameManager = gameManager;
+        this.crashManager = crashManager;
         this.crashProvider = crashProvider;
 
         final Command.Builder<CommandSender> builder = this.commandManager.commandBuilder("crashadmin", "ca");
@@ -56,7 +56,7 @@ public class CrashAdminCommand {
      * @param context command context.
      */
     private void handleStart(final @NonNull CommandContext<CommandSender> context) {
-        this.gameManager.startGame();
+        this.crashManager.startGame();
     }
 
 

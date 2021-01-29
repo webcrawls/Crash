@@ -3,7 +3,7 @@ package dev.kscott.crash.menu;
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import com.github.stefvanschie.inventoryframework.pane.StaticPane;
 import dev.kscott.crash.config.*;
-import dev.kscott.crash.game.GameManager;
+import dev.kscott.crash.game.crash.CrashManager;
 import dev.kscott.crash.utils.ItemBuilder;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextReplacementConfig;
@@ -25,39 +25,39 @@ public class RunningMenu extends GameMenu {
      */
     public RunningMenu(
             final @NonNull Player player,
-            final @NonNull GameManager gameManager,
+            final @NonNull CrashManager crashManager,
             final @NonNull Config config,
             final @NonNull Lang lang,
             final @NonNull MenuConfig menuConfig
     ) {
         super(6, lang.s("crash-inventory-title"));
 
-        boolean playerDidBet = gameManager.getBetManager().didBet(player);
+        boolean playerDidBet = crashManager.getBetManager().didBet(player);
 
         @NonNull List<Component> lore;
 
-        final @NonNull RunningMenuIconData iconData = menuConfig.getRunningIconData(gameManager.getCurrentMultiplier());
+        final @NonNull RunningMenuIconData iconData = menuConfig.getRunningIconData(crashManager.getCurrentMultiplier());
 
         @NonNull Component nameComponent = Objects.requireNonNullElse(iconData.getName(), Component.text(""));
 
-        nameComponent = nameComponent.replaceText(TextReplacementConfig.builder().match("\\{multiplier\\}").replacement(Double.toString(gameManager.getCurrentMultiplier())).build());
+        nameComponent = nameComponent.replaceText(TextReplacementConfig.builder().match("\\{multiplier\\}").replacement(Double.toString(crashManager.getCurrentMultiplier())).build());
 
         if (playerDidBet) {
             lore = new ArrayList<>();
             for (final @NonNull Component loreComponent : iconData.getDidBetLore()) {
-                 lore.add(loreComponent.replaceText(TextReplacementConfig.builder().match("\\{multiplied-bet\\}").replacement(Lang.formatCurrency(gameManager.getBetManager().getCashout(player))).build()));
+                 lore.add(loreComponent.replaceText(TextReplacementConfig.builder().match("\\{multiplied-bet\\}").replacement(Lang.formatCurrency(crashManager.getBetManager().getCashout(player))).build()));
             }
         } else {
             lore = Objects.requireNonNullElse(iconData.getLore(), new ArrayList<>());
         }
 
         if (menuConfig.isRunningOtherBetsList()) {
-            if (gameManager.getBetManager().getBets().size() != 0) {
+            if (crashManager.getBetManager().getBets().size() != 0) {
                 final @NonNull Component header = menuConfig.getOtherBetsListHeader();
 
                 lore.add(header);
 
-                final @NonNull Set<Map.Entry<UUID, Double>> betList = gameManager.getBetManager().getBets().entrySet();
+                final @NonNull Set<Map.Entry<UUID, Double>> betList = crashManager.getBetManager().getBets().entrySet();
 
                 final @NonNull Iterator<Map.Entry<UUID, Double>> betListIterator = betList.iterator();
 
@@ -103,7 +103,7 @@ public class RunningMenu extends GameMenu {
 
         fgPane.addItem(new GuiItem(iconItemStack, onClick -> {
             final @NonNull Player whoClicked = (Player) onClick.getWhoClicked();
-            gameManager.getBetManager().cashout(whoClicked);
+            crashManager.getBetManager().cashout(whoClicked);
         }), 4, 2);
 
 

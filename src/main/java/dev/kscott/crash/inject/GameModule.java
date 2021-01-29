@@ -7,9 +7,9 @@ import com.google.inject.Singleton;
 import dev.kscott.crash.config.Config;
 import dev.kscott.crash.config.Lang;
 import dev.kscott.crash.config.MenuConfig;
-import dev.kscott.crash.game.BetManager;
-import dev.kscott.crash.game.CrashProvider;
-import dev.kscott.crash.game.GameManager;
+import dev.kscott.crash.game.crash.BetManager;
+import dev.kscott.crash.game.crash.CrashProvider;
+import dev.kscott.crash.game.crash.CrashManager;
 import dev.kscott.crash.menu.MenuManager;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -35,11 +35,11 @@ public class GameModule extends AbstractModule {
      * @param commandManager PaperCommandManager reference.
      * @param config         Config reference.
      * @param lang           Lang reference.
-     * @return the {@link GameManager}.
+     * @return the {@link CrashManager}.
      */
     @Provides
     @Singleton
-    public @NonNull GameManager provideGameManager(
+    public @NonNull CrashManager provideGameManager(
             final @NonNull JavaPlugin plugin,
             final @NonNull CrashProvider crashProvider,
             final @NonNull PaperCommandManager<CommandSender> commandManager,
@@ -47,27 +47,27 @@ public class GameModule extends AbstractModule {
             final @NonNull Lang lang,
             final @NonNull MenuConfig menuConfig
     ) {
-        return new GameManager(plugin, crashProvider, commandManager, config, lang, menuConfig);
+        return new CrashManager(plugin, crashProvider, commandManager, config, lang, menuConfig);
     }
 
     /**
-     * @param gameManager GameManager reference.
+     * @param crashManager GameManager reference.
      * @return {@link MenuManager}.
      */
     @Provides
     @Singleton
-    public @NonNull MenuManager provideMenuManager(final @NonNull GameManager gameManager) {
-        return gameManager.getMenuManager();
+    public @NonNull MenuManager provideMenuManager(final @NonNull CrashManager crashManager) {
+        return crashManager.getMenuManager();
     }
 
     /**
-     * @param gameManager GameManager reference.
+     * @param crashManager GameManager reference.
      * @return {@link BetManager}.
      */
     @Provides
     @Singleton
-    public @NonNull BetManager provideBetManager(final @NonNull GameManager gameManager) {
-        return gameManager.getBetManager();
+    public @NonNull BetManager provideBetManager(final @NonNull CrashManager crashManager) {
+        return crashManager.getBetManager();
     }
 
 

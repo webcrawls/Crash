@@ -1,4 +1,4 @@
-package dev.kscott.crash.game;
+package dev.kscott.crash.game.crash;
 
 import dev.kscott.crash.config.Lang;
 import dev.kscott.crash.exception.NotEnoughBalanceException;
@@ -26,7 +26,7 @@ public class BetManager {
     /**
      * GameManager reference.
      */
-    private final @NonNull GameManager gameManager;
+    private final @NonNull CrashManager crashManager;
 
     /**
      * The Map which stores the player bets.
@@ -56,14 +56,14 @@ public class BetManager {
     /**
      * Constructs BetManager.
      *
-     * @param gameManager GameManager reference.
+     * @param crashManager GameManager reference.
      */
     public BetManager(
             final @NonNull JavaPlugin plugin,
-            final @NonNull GameManager gameManager,
+            final @NonNull CrashManager crashManager,
             final @NonNull Lang lang
     ) {
-        this.gameManager = gameManager;
+        this.crashManager = crashManager;
         this.lang = lang;
         this.audiences = BukkitAudiences.create(plugin);
         this.betMap = new HashMap<>();
@@ -99,7 +99,7 @@ public class BetManager {
 
         if (playerBalance >= bet) {
             economy.withdrawPlayer(player, bet);
-            if (gameManager.getGameState() == GameManager.GameState.RUNNING) {
+            if (crashManager.getGameState() == CrashManager.GameState.RUNNING) {
                 this.queuedBetMap.put(player.getUniqueId(), bet);
                 audiences.player(player).sendMessage(lang.c("bet-queued-message", Map.of("{money}", Lang.formatCurrency(bet))));
             } else {
@@ -148,7 +148,7 @@ public class BetManager {
         if (!this.didBet(player)) {
             return 0;
         }
-        return Math.round(this.getBet(player) * this.gameManager.getCurrentMultiplier() * 100.0) / 100.0;
+        return Math.round(this.getBet(player) * this.crashManager.getCurrentMultiplier() * 100.0) / 100.0;
     }
 
     /**
