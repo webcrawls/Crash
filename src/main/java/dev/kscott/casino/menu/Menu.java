@@ -2,7 +2,6 @@ package dev.kscott.casino.menu;
 
 import com.github.stefvanschie.inventoryframework.gui.type.util.Gui;
 import org.bukkit.entity.Player;
-import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 /**
@@ -18,7 +17,7 @@ public abstract class Menu {
     /**
      * Constructs {@link Menu}.
      *
-     * @param id     the id of this {@link Menu}.
+     * @param id the id of this {@link Menu}.
      */
     public Menu(
             final @NonNull String id
