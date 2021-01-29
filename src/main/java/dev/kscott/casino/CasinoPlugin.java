@@ -17,7 +17,7 @@ public class CasinoPlugin extends JavaPlugin {
     /**
      * The warning to display when {@link this#isDeprecated()} returns {@code true}.
      */
-    private static final String[] DEPRECATED_WARNING = new String[]{
+    private static final @NonNull String[] DEPRECATED_WARNING = new String[]{
             "This server is running Spigot or CraftBukkit!",
             "BlueCasino supports these server versions, support",
             "may be removed in the future.",
