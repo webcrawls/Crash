@@ -37,7 +37,12 @@ public class CasinoPlugin extends JavaPlugin {
      */
     @Override
     public void onEnable() {
-        DEPRECATED = this.getServer().getVersion().contains("Spigot") || this.getServer().getVersion().contains("CraftBukkit");
+        try {
+            Class.forName("com.destroystokyo.paper.PaperConfig");
+            DEPRECATED = false;
+        } catch (final ClassNotFoundException ex) {
+            DEPRECATED = true;
+        }
 
         if (DEPRECATED) {
             for (final @NonNull String message : DEPRECATED_WARNING) {
