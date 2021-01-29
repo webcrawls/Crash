@@ -13,8 +13,8 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 public class CasinoPlugin extends JavaPlugin {
 
     /**
-     * If true, this server is Spigot or CB.
-     * If false, it's something else.
+     * If true, this server isn't running Paper.
+     * If false, this server is running Paper or a fork of Paper.
      */
     private static boolean DEPRECATED = false;
 
