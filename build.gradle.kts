@@ -59,7 +59,7 @@ tasks {
             }
         }
 
-        archiveFileName.set("Crash-${archiveVersion.get()}.jar")
+        archiveFileName.set("Casino-${archiveVersion.get()}.jar")
 
         dependencies {
             exclude(dependency("com.google.guava:"))

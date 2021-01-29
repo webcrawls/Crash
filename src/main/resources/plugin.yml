@@ -1,8 +1,8 @@
-name: CasinoCrash
+name: BlueCasino
 version: @version@
-main: dev.kscott.crash.CrashPlugin
+main: dev.kscott.casino.CasinoPlugin
 api-version: 1.16
 authors: [ bluely ]
-description: A fun casino-inspired game!
+description: A suite of casino-inspired games!
 website: kscott.dev
 depend: [Vault]
