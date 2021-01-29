@@ -38,10 +38,11 @@ public class CasinoPlugin extends JavaPlugin {
      */
     @Override
     public void onEnable() {
+        // TODO add feature check system
         try {
-            Class.forName("com.destroystokyo.paper.PaperConfig");
+            this.getServer().spigot().getPaperConfig();
             DEPRECATED = false;
-        } catch (final ClassNotFoundException ex) {
+        } catch (final NoSuchMethodError ex) {
             DEPRECATED = true;
         }
 
