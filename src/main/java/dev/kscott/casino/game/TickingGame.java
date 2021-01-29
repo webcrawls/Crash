@@ -46,6 +46,11 @@ public abstract class TickingGame extends Game {
     public abstract void startGame();
 
     /**
+     * Stops this game.
+     */
+    public abstract void stopGame();
+
+    /**
      * @return how fast this game should tick, measured in Minecraft ticks.
      */
     public int getTickSpeed() {
