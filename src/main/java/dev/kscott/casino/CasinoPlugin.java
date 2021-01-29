@@ -18,7 +18,7 @@ public class CasinoPlugin extends JavaPlugin {
      */
     @Override
     public void onEnable() {
-        DEPRECATED = this.getServer().getVersion().contains("Spigot") || this.getServer().getVersion().contains("Craftbukkit");
+        DEPRECATED = this.getServer().getVersion().contains("Spigot") || this.getServer().getVersion().contains("CraftBukkit");
 
         if (this.getServer().getPluginManager().getPlugin("Vault") == null) {
             throw new RuntimeException("The Vault plugin is not installed. Please install it!");
