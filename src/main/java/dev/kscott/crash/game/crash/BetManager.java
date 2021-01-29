@@ -11,7 +11,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 
 /**
  * Manages interactions for player bets.
@@ -177,6 +180,7 @@ public class BetManager {
 
     /**
      * Cashes out a player.
+     *
      * @param player Player to cashout.
      */
     public void cashout(final @NonNull OfflinePlayer player) {

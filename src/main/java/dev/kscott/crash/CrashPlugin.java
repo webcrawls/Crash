@@ -34,7 +34,7 @@ public final class CrashPlugin extends JavaPlugin {
         }
 
         final @NonNull Injector injector = Guice.createInjector(
-                new PluginModule(this),
+                //new PluginModule(this),
                 new CommandModule(this),
                 new ConfigModule(),
                 new GameModule()
