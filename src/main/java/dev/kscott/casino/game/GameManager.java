@@ -35,12 +35,13 @@ public class GameManager {
     }
 
     /**
-     * Registers a {@link Game}.
+     * Registers a {@link Game} and runs it's setup method.
      *
      * @param game the {@link Game} to register.
      */
     public void registerGame(final @NonNull Game game) {
         this.gameMap.put(game.getGameType(), game);
+        game.setup();
     }
 
     /**
