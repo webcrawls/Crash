@@ -25,11 +25,23 @@ public class CrashGame extends TickingGame {
     /**
      * Runs Crash game logic.
      */
-    @Override
     public void runGameTick() {
         if (this.gameState == CrashGameState.STOPPED) {
             return;
         }
+    }
+
+    /**
+     * Starts the game.
+     *
+     * @throws IllegalStateException if the game is already running.
+     */
+    public void startGame() throws IllegalStateException {
+        if (this.gameState != CrashGameState.STOPPED) {
+            throw new IllegalStateException("The game is already running!");
+        }
+
+        this.gameState = CrashGameState.PRE_GAME;
     }
 
     /**
