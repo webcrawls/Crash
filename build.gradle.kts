@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "dev.kscott"
-version = "1.0.3"
+version = "2.0.0"
 
 configure<JavaPluginConvention> {
     sourceCompatibility = JavaVersion.VERSION_11
