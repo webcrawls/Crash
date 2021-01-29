@@ -1,11 +1,12 @@
 package dev.kscott.casino.game.crash;
 
-import dev.kscott.casino.game.Game;
 import dev.kscott.casino.game.GameType;
 import dev.kscott.casino.game.TickingGame;
 import dev.kscott.casino.game.crash.menu.CrashPreGameMenu;
 import dev.kscott.casino.menu.MenuManager;
 import dev.kscott.casino.menu.MenuProvider;
+import org.bukkit.Bukkit;
+import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 /**
@@ -34,6 +35,11 @@ public class CrashGame extends TickingGame implements MenuProvider {
     public static final String MT_POST_GAME = "crash_post_game";
 
     /**
+     * CrashProvider instance.
+     */
+    private @MonotonicNonNull CrashProvider crashProvider;
+
+    /**
      * Stores the current {@link CrashGameState}.
      */
     private @NonNull CrashGameState gameState;
@@ -44,11 +50,30 @@ public class CrashGame extends TickingGame implements MenuProvider {
     private int preGameCountdown;
 
     /**
+     * Stores the crash point for the current game.
+     */
+    private double crashPoint;
+
+    /**
+     * Stores the current multiplier for the current game.
+     */
+    private double currentMultiplier;
+
+    /**
+     * Stores how many seconds have elapsed for the post game phase.
+     */
+    private double postGameSeconds;
+
+    /**
      * Constructs {@link CrashGame}.
      */
     public CrashGame() {
         super("crash", GameType.CRASH, 3);
         this.gameState = CrashGameState.STOPPED;
+        this.currentMultiplier = 0;
+        this.postGameSeconds = 0;
+        this.preGameCountdown = 0;
+        this.crashPoint = 0;
     }
 
     /**
@@ -56,6 +81,7 @@ public class CrashGame extends TickingGame implements MenuProvider {
      */
     public void setup() {
         // TODO init betmanager
+        this.crashProvider = new CrashProvider();
     }
 
     /**
@@ -67,8 +93,36 @@ public class CrashGame extends TickingGame implements MenuProvider {
         }
 
         if (this.gameState == CrashGameState.PRE_GAME) {
+            Bukkit.broadcastMessage("Pre-game: " + preGameCountdown);
             preGameCountdown--;
 
+            if (preGameCountdown == 0) {
+                this.currentMultiplier = 1;
+                this.crashPoint = this.crashProvider.generateCrashPoint();
+                this.gameState = CrashGameState.RUNNING;
+            }
+        }
+
+        if (this.gameState == CrashGameState.RUNNING) {
+            // thanks kevin u straight g
+            if (crashPoint > currentMultiplier) {
+                currentMultiplier = Math.round((currentMultiplier + (currentMultiplier * 0.03)) * 100.0) / 100.0;
+                Bukkit.broadcastMessage("Running: " + currentMultiplier + "x");
+            }
+
+            if (crashPoint <= currentMultiplier) {
+                Bukkit.broadcastMessage("crashed at " + crashPoint + "x! ");
+                this.gameState = CrashGameState.POST_GAME;
+                this.postGameSeconds = 0;
+            }
+        }
+
+        if (this.gameState == CrashGameState.POST_GAME) {
+            postGameSeconds++;
+
+            if (postGameSeconds >= 5) {
+                this.gameState = CrashGameState.PRE_GAME;
+            }
         }
     }
 
