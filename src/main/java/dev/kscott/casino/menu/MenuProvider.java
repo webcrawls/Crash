@@ -12,4 +12,11 @@ public interface MenuProvider {
      */
     @NonNull String getMenuId();
 
+    /**
+     * Called when the {@link MenuProvider} should register it's menus.
+     *
+     * @param menuManager The {@link MenuManager} to register menus with.
+     */
+    void registerMenus(@NonNull MenuManager menuManager);
+
 }
