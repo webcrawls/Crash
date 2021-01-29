@@ -1,5 +1,7 @@
 package dev.kscott.casino.game;
 
+import dev.kscott.casino.game.crash.CrashGame;
+
 /**
  * The GameType enum.
  */
