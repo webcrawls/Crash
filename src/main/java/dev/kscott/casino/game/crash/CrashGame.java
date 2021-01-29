@@ -1,5 +1,6 @@
 package dev.kscott.casino.game.crash;
 
+import dev.kscott.casino.game.Game;
 import dev.kscott.casino.game.GameType;
 import dev.kscott.casino.game.TickingGame;
 import dev.kscott.casino.game.crash.menu.CrashPreGameMenu;
@@ -48,6 +49,13 @@ public class CrashGame extends TickingGame implements MenuProvider {
     public CrashGame() {
         super("crash", GameType.CRASH, 3);
         this.gameState = CrashGameState.STOPPED;
+    }
+
+    /**
+     * Sets up the game.
+     */
+    public void setup() {
+        // TODO init betmanager
     }
 
     /**
@@ -120,7 +128,6 @@ public class CrashGame extends TickingGame implements MenuProvider {
      *
      * @param menuManager The {@link MenuManager} to register menus with.
      */
-    @Override
     public void registerMenus(final @NonNull MenuManager menuManager) {
         menuManager.registerMenu(new CrashPreGameMenu(this), GameType.CRASH);
     }

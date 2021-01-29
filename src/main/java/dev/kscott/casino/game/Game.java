@@ -31,6 +31,11 @@ public abstract class Game {
     }
 
     /**
+     * Executes critical pre-run code.
+     */
+    public abstract void setup();
+
+    /**
      * @return the id of this {@link Game}.
      */
     public @NonNull String getGameId() {
