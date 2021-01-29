@@ -15,6 +15,11 @@ public class CrashGame extends TickingGame {
     private @NonNull CrashGameState gameState;
 
     /**
+     * Stores the pre game countdown.
+     */
+    private int preGameCountdown;
+
+    /**
      * Constructs {@link CrashGame}.
      */
     public CrashGame() {
@@ -41,7 +46,26 @@ public class CrashGame extends TickingGame {
             throw new IllegalStateException("The game is already running!");
         }
 
+        this.running = true;
         this.gameState = CrashGameState.PRE_GAME;
+        this.preGameCountdown = 10;
+    }
+
+    /**
+     * Stops the game.
+     *
+     * @throws IllegalStateException if the game is already stopped.
+     */
+    public void stopGame() throws IllegalStateException {
+        if (this.gameState == CrashGameState.STOPPED) {
+            throw new IllegalStateException("The game is already stopped!");
+        }
+
+        this.gameState = CrashGameState.STOPPED;
+        this.preGameCountdown = 0;
+        this.running = false;
+        // TODO return all bets
+        // TODO close all inventory menus
     }
 
     /**
