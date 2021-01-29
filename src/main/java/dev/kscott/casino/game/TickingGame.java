@@ -42,13 +42,17 @@ public abstract class TickingGame extends Game {
 
     /**
      * Starts this game.
+     *
+     * @throws IllegalStateException if the game is already started.
      */
-    public abstract void startGame();
+    public abstract void startGame() throws IllegalStateException;
 
     /**
      * Stops this game.
+     *
+     * @throws IllegalStateException if the game is already stopped.
      */
-    public abstract void stopGame();
+    public abstract void stopGame() throws IllegalStateException;
 
     /**
      * @return how fast this game should tick, measured in Minecraft ticks.
