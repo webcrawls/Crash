@@ -8,6 +8,7 @@ import dev.kscott.casino.inject.CommandModule;
 import dev.kscott.casino.inject.EconomyModule;
 import dev.kscott.casino.inject.GameModule;
 import dev.kscott.casino.inject.PluginModule;
+import dev.kscott.casino.listeners.PlayerJoinListener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
@@ -70,6 +71,10 @@ public class CasinoPlugin extends JavaPlugin {
 
         final @NonNull CrashGame crash = injector.getInstance(CrashGame.class);
         gameManager.registerGame(crash);
+
+        final @NonNull PlayerJoinListener listener = injector.getInstance(PlayerJoinListener.class);
+
+        this.getServer().getPluginManager().registerEvents(listener, this);
     }
 
     /**
