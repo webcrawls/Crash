@@ -61,8 +61,10 @@ public class GameManager {
                 @Override
                 public void run() {
                     tickingGame.runGameTick();
-                };
+                }
             };
+
+            this.tickMap.put(tickingGame, runnable);
 
             tickingGame.startGame();
             runnable.runTaskTimer(plugin, 0, tickTime);
