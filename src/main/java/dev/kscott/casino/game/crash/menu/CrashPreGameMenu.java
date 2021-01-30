@@ -1,6 +1,8 @@
 package dev.kscott.casino.game.crash.menu;
 
+import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
 import com.github.stefvanschie.inventoryframework.gui.type.util.Gui;
+import dev.kscott.casino.game.GameType;
 import dev.kscott.casino.game.crash.CrashGame;
 import dev.kscott.casino.menu.GameMenu;
 import org.bukkit.entity.Player;
@@ -17,7 +19,7 @@ public class CrashPreGameMenu extends GameMenu<CrashGame> {
      * @param game The {@link CrashGame} reference.
      */
     public CrashPreGameMenu(final @NonNull CrashGame game) {
-        super(CrashGame.MT_PRE_GAME, game);
+        super(CrashGame.MT_PRE_GAME, GameType.CRASH, game);
     }
 
     /**
@@ -27,6 +29,8 @@ public class CrashPreGameMenu extends GameMenu<CrashGame> {
      */
     @Override
     public Gui constructMenu(final @NonNull Player player) {
-        return null;
+        final @NonNull ChestGui gui = new ChestGui(6, "Crash Pre Game "+this.game.getPreGameSeconds()+"s");
+
+        return gui;
     }
 }

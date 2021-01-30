@@ -1,6 +1,7 @@
 package dev.kscott.casino.menu;
 
 import dev.kscott.casino.game.Game;
+import dev.kscott.casino.game.GameType;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 /**
@@ -11,6 +12,11 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 public abstract class GameMenu<T extends Game> extends Menu {
 
     /**
+     * The {@link GameType} associated with this meny.
+     */
+    private final @NonNull GameType gameType;
+
+    /**
      * Reference to the {@link Game}.
      */
     protected final @NonNull T game;
@@ -19,13 +25,16 @@ public abstract class GameMenu<T extends Game> extends Menu {
      * Constructs {@link GameMenu}.
      *
      * @param id   id of this menu.
+     * @param gameType {@link GameType} associated with this menu.
      * @param game the {@link Game} associated with this menu.
      */
     public GameMenu(
             final @NonNull String id,
+            final @NonNull GameType gameType,
             final @NonNull T game
     ) {
         super(id);
         this.game = game;
+        this.gameType = gameType;
     }
 }
