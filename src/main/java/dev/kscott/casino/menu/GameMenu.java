@@ -27,7 +27,5 @@ public abstract class GameMenu<T extends Game> extends Menu {
     ) {
         super(id);
         this.game = game;
-
     }
-
 }
