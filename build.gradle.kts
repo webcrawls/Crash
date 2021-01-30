@@ -4,7 +4,8 @@ plugins {
     id("java")
     id("java-library")
     id("com.github.johnrengelman.shadow") version("6.1.0")
-    id("checkstyle")
+    // TODO uncomment this
+//    id("checkstyle")
 }
 
 group = "dev.kscott"
