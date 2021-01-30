@@ -34,6 +34,12 @@ public class CrashGame extends TickingGame implements MenuProvider {
      */
     public static final String MT_POST_GAME = "crash_post_game";
 
+    private static final int PRE_GAME_LENGTH = 10;
+
+    private static final int POST_GAME_LENGTH = 5;
+
+    private static final int MINECRAFT_TICKS_PER_SECOND = 20;
+
     /**
      * CrashProvider instance.
      */
@@ -93,13 +99,15 @@ public class CrashGame extends TickingGame implements MenuProvider {
         }
 
         if (this.gameState == CrashGameState.PRE_GAME) {
-            Bukkit.broadcastMessage("Pre-game: " + preGameTicks);
-            preGameTicks--;
+            Bukkit.broadcastMessage("pregame: seconds left: "+(PRE_GAME_LENGTH - (preGameTicks / (MINECRAFT_TICKS_PER_SECOND / tickSpeed))));
+            preGameTicks++;
 
-            if (preGameTicks <= 0) {
-                this.currentMultiplier = 1;
+            if (preGameTicks >= (MINECRAFT_TICKS_PER_SECOND / tickSpeed)*PRE_GAME_LENGTH) {
                 this.crashPoint = this.crashProvider.generateCrashPoint();
                 this.gameState = CrashGameState.RUNNING;
+                this.currentMultiplier = 1;
+                this.postGameTicks = 0;
+                this.preGameTicks = 0;
             }
         }
 
@@ -120,12 +128,12 @@ public class CrashGame extends TickingGame implements MenuProvider {
         if (this.gameState == CrashGameState.POST_GAME) {
             postGameTicks++;
 
-            Bukkit.broadcastMessage("postgame: seconds left: "+(5-(postGameTicks/(20 / tickSpeed))));
+            Bukkit.broadcastMessage("postgame: seconds left: "+(POST_GAME_LENGTH-(postGameTicks/(MINECRAFT_TICKS_PER_SECOND / tickSpeed))));
 
-            if (postGameTicks >= (20 / tickSpeed)*5) {
+            if (postGameTicks >= (MINECRAFT_TICKS_PER_SECOND / tickSpeed)*POST_GAME_LENGTH) {
                 this.gameState = CrashGameState.PRE_GAME;
                 this.postGameTicks = 0;
-                this.preGameTicks = 5;
+                this.preGameTicks = 0;
             }
         }
     }
