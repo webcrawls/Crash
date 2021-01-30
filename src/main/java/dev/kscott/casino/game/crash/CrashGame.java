@@ -100,11 +100,11 @@ public class CrashGame extends TickingGame implements MenuProvider {
         }
 
         if (this.gameState == CrashGameState.PRE_GAME) {
-            Bukkit.broadcastMessage("pre-game: "+getPreGameSecondsLeft()+"s left");
+            Bukkit.broadcastMessage("pre-game: " + getPreGameSecondsLeft() + "s left");
 
             preGameTicks++;
 
-            if (preGameTicks >= (MINECRAFT_TICKS_PER_SECOND / tickSpeed)*PRE_GAME_LENGTH) {
+            if (preGameTicks >= (MINECRAFT_TICKS_PER_SECOND / tickSpeed) * PRE_GAME_LENGTH) {
                 this.crashPoint = this.crashProvider.generateCrashPoint();
                 this.gameState = CrashGameState.RUNNING;
                 this.currentMultiplier = 1;
@@ -128,11 +128,11 @@ public class CrashGame extends TickingGame implements MenuProvider {
         }
 
         if (this.gameState == CrashGameState.POST_GAME) {
-            Bukkit.broadcastMessage("post-game: "+getPostGameSecondsLeft()+"s left");
+            Bukkit.broadcastMessage("post-game: " + getPostGameSecondsLeft() + "s left");
 
             postGameTicks++;
 
-            if (postGameTicks >= (MINECRAFT_TICKS_PER_SECOND / tickSpeed)*POST_GAME_LENGTH) {
+            if (postGameTicks >= (MINECRAFT_TICKS_PER_SECOND / tickSpeed) * POST_GAME_LENGTH) {
                 this.gameState = CrashGameState.PRE_GAME;
                 this.postGameTicks = 0;
                 this.preGameTicks = 0;
@@ -208,10 +208,17 @@ public class CrashGame extends TickingGame implements MenuProvider {
     }
 
     /**
-     * @return the pre-game countdown.
+     * @return Crash gameticks elapsed since the pre-game phase started.
      */
-    public int getPreGameTicks() {
+    public double getPreGameTicks() {
         return preGameTicks;
+    }
+
+    /**
+     * @return Crash gameticks elapsed since the post-game phase started.
+     */
+    public double getPostGameTicks() {
+        return postGameTicks;
     }
 
     /**
