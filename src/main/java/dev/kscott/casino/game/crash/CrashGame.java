@@ -8,6 +8,8 @@ import dev.kscott.casino.game.crash.menu.CrashRunningMenu;
 import dev.kscott.casino.menu.MenuManager;
 import dev.kscott.casino.menu.MenuProvider;
 import dev.kscott.casino.utils.MathUtils;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -80,9 +82,20 @@ public class CrashGame extends TickingGame implements MenuProvider {
     private double postGameTicks;
 
     /**
-     * Constructs {@link CrashGame}.
+     * Stores the {@link BetManager} instance.
      */
-    public CrashGame() {
+    private @MonotonicNonNull BetManager betManager;
+
+    /**
+     * Constructs {@link CrashGame}.
+     *
+     * @param bukkitAudiences {@link BukkitAudiences} reference.
+     * @param economy         {@link Economy} reference.
+     */
+    public CrashGame(
+            final @NonNull BukkitAudiences bukkitAudiences,
+            final @NonNull Economy economy
+    ) {
         super("crash", GameType.CRASH, 3);
         this.gameState = CrashGameState.STOPPED;
         this.currentMultiplier = 0;
@@ -90,6 +103,7 @@ public class CrashGame extends TickingGame implements MenuProvider {
         this.preGameTicks = 0;
         this.crashPoint = 0;
         this.updateMenus = false;
+        this.betManager = new BetManager(this, bukkitAudiences, economy);
     }
 
     /**
