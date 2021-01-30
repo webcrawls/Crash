@@ -37,4 +37,11 @@ public abstract class GameMenu<T extends Game> extends Menu {
         this.game = game;
         this.gameType = gameType;
     }
+
+    /**
+     * @return this {@link GameMenu}'s {@link GameType}.
+     */
+    public @NonNull GameType getGameType() {
+        return gameType;
+    }
 }
