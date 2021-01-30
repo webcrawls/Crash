@@ -54,6 +54,12 @@ public class CrashGame extends TickingGame implements MenuProvider {
     private @NonNull CrashGameState gameState;
 
     /**
+     * If true, the menus should update next tick.
+     * If false, they shouldn't.
+     */
+    private boolean updateMenus;
+
+    /**
      * Stores the pre game countdown.
      */
     private int preGameTicks;
@@ -83,6 +89,7 @@ public class CrashGame extends TickingGame implements MenuProvider {
         this.postGameTicks = 0;
         this.preGameTicks = 0;
         this.crashPoint = 0;
+        this.updateMenus = false;
     }
 
     /**
@@ -106,6 +113,10 @@ public class CrashGame extends TickingGame implements MenuProvider {
 
             preGameTicks++;
 
+            if ((this.getPreGameSeconds() % 1) == 0) {
+                this.updateMenus();
+            }
+
             if (preGameTicks >= (MINECRAFT_TICKS_PER_SECOND / tickSpeed) * PRE_GAME_LENGTH) {
                 this.crashPoint = this.crashProvider.generateCrashPoint();
                 this.gameState = CrashGameState.RUNNING;
@@ -113,21 +124,25 @@ public class CrashGame extends TickingGame implements MenuProvider {
                 this.postGameTicks = 0;
                 this.preGameTicks = 0;
             }
+
+            return;
         }
 
         if (this.gameState == CrashGameState.RUNNING) {
+            updateMenus();
             // thanks kevin u straight g
+            if (crashPoint > currentMultiplier) {
+                currentMultiplier = Math.round((currentMultiplier + (currentMultiplier * 0.03)) * 100.0) / 100.0;
+                Bukkit.broadcastMessage("Running: " + currentMultiplier + "x");
+            }
+
             if (crashPoint <= currentMultiplier) {
                 Bukkit.broadcastMessage("crashed at " + crashPoint + "x! ");
                 this.gameState = CrashGameState.POST_GAME;
                 this.postGameTicks = 0;
             }
 
-            if (crashPoint > currentMultiplier) {
-                currentMultiplier = Math.round((currentMultiplier + (currentMultiplier * 0.03)) * 100.0) / 100.0;
-                Bukkit.broadcastMessage("Running: " + currentMultiplier + "x");
-            }
-
+            return;
         }
 
         if (this.gameState == CrashGameState.POST_GAME) {
@@ -135,11 +150,17 @@ public class CrashGame extends TickingGame implements MenuProvider {
 
             postGameTicks++;
 
+            if ((this.getPostGameSeconds() % 1) == 0) {
+                this.updateMenus();
+            }
+
             if (postGameTicks >= (MINECRAFT_TICKS_PER_SECOND / tickSpeed) * POST_GAME_LENGTH) {
                 this.gameState = CrashGameState.PRE_GAME;
                 this.postGameTicks = 0;
                 this.preGameTicks = 0;
             }
+
+            return;
         }
     }
 
@@ -252,5 +273,26 @@ public class CrashGame extends TickingGame implements MenuProvider {
      */
     public double getPostGameSecondsLeft() {
         return MathUtils.roundToTwoDecimalPoints(POST_GAME_LENGTH - getPostGameSeconds());
+    }
+
+    /**
+     * Flips the updateMenus boolean to true, instructing the MenuManager to update menus for the next game tick.
+     */
+    public void updateMenus() {
+        this.updateMenus = true;
+    }
+
+    /**
+     * @return true if the menus should be updated for the next game tick, false if not.
+     */
+    public boolean shouldUpdateMenus() {
+        return this.updateMenus;
+    }
+
+    /**
+     * Called when the {@link MenuManager} updates all open menus.
+     */
+    public void onMenusUpdate() {
+        this.updateMenus = false;
     }
 }
