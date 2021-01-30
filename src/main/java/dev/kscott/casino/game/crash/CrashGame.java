@@ -5,6 +5,7 @@ import dev.kscott.casino.game.TickingGame;
 import dev.kscott.casino.game.crash.menu.CrashPreGameMenu;
 import dev.kscott.casino.menu.MenuManager;
 import dev.kscott.casino.menu.MenuProvider;
+import dev.kscott.casino.utils.MathUtils;
 import org.bukkit.Bukkit;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -214,30 +215,30 @@ public class CrashGame extends TickingGame implements MenuProvider {
     }
 
     /**
-     * @return how many seconds have elapsed since the pre-game phase started.
+     * @return how many seconds have elapsed since the pre-game phase started. Rounded to two decimal points.
      */
     public double getPreGameSeconds() {
-        return preGameTicks / (MINECRAFT_TICKS_PER_SECOND / tickSpeed);
+        return MathUtils.roundToTwoDecimalPoints(preGameTicks / (MINECRAFT_TICKS_PER_SECOND / tickSpeed));
     }
 
     /**
-     * @return how many seconds are left on the pre-game countdown timer.
+     * @return how many seconds are left on the pre-game countdown timer. Rounded to two decimal points.
      */
     public double getPreGameSecondsLeft() {
-        return PRE_GAME_LENGTH - getPreGameSeconds();
+        return MathUtils.roundToTwoDecimalPoints(PRE_GAME_LENGTH - getPreGameSeconds());
     }
 
     /**
-     * @return how many seconds have elapsed since the post-game phase started.
+     * @return how many seconds have elapsed since the post-game phase started. Rounded to two decimal points.
      */
     public double getPostGameSeconds() {
-        return postGameTicks / (MINECRAFT_TICKS_PER_SECOND / tickSpeed);
+        return MathUtils.roundToTwoDecimalPoints(postGameTicks / (MINECRAFT_TICKS_PER_SECOND / tickSpeed));
     }
 
     /**
-     * @return how many seconds are left on the post-game countdown timer.
+     * @return how many seconds are left on the post-game countdown timer. Rounded to two decimal points.
      */
     public double getPostGameSecondsLeft() {
-        return POST_GAME_LENGTH - getPostGameSeconds();
+        return MathUtils.roundToTwoDecimalPoints(POST_GAME_LENGTH - getPostGameSeconds());
     }
 }
