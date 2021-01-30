@@ -2,7 +2,9 @@ package dev.kscott.casino.game.crash;
 
 import dev.kscott.casino.game.GameType;
 import dev.kscott.casino.game.TickingGame;
+import dev.kscott.casino.game.crash.menu.CrashPostGameMenu;
 import dev.kscott.casino.game.crash.menu.CrashPreGameMenu;
+import dev.kscott.casino.game.crash.menu.CrashRunningMenu;
 import dev.kscott.casino.menu.MenuManager;
 import dev.kscott.casino.menu.MenuProvider;
 import dev.kscott.casino.utils.MathUtils;
@@ -199,6 +201,8 @@ public class CrashGame extends TickingGame implements MenuProvider {
      */
     public void registerMenus(final @NonNull MenuManager menuManager) {
         menuManager.registerMenu(new CrashPreGameMenu(this), GameType.CRASH);
+        menuManager.registerMenu(new CrashRunningMenu(this), GameType.CRASH);
+        menuManager.registerMenu(new CrashPostGameMenu(this), GameType.CRASH);
     }
 
     /**
