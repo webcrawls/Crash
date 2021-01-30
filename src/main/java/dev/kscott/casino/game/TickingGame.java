@@ -10,7 +10,7 @@ public abstract class TickingGame extends Game {
     /**
      * Controls how fast this game will tick. Measured in Minecraft ticks.
      */
-    private final int tickSpeed;
+    protected final int tickSpeed;
 
     /**
      * If false, this game is not running and should not be ticked.
