@@ -47,7 +47,7 @@ public class CrashGame extends TickingGame implements MenuProvider {
     /**
      * Stores the pre game countdown.
      */
-    private int preGameCountdown;
+    private int preGameTicks;
 
     /**
      * Stores the crash point for the current game.
@@ -62,7 +62,7 @@ public class CrashGame extends TickingGame implements MenuProvider {
     /**
      * Stores how many seconds have elapsed for the post game phase.
      */
-    private double postGameSeconds;
+    private double postGameTicks;
 
     /**
      * Constructs {@link CrashGame}.
@@ -71,8 +71,8 @@ public class CrashGame extends TickingGame implements MenuProvider {
         super("crash", GameType.CRASH, 3);
         this.gameState = CrashGameState.STOPPED;
         this.currentMultiplier = 0;
-        this.postGameSeconds = 0;
-        this.preGameCountdown = 0;
+        this.postGameTicks = 0;
+        this.preGameTicks = 0;
         this.crashPoint = 0;
     }
 
@@ -93,10 +93,10 @@ public class CrashGame extends TickingGame implements MenuProvider {
         }
 
         if (this.gameState == CrashGameState.PRE_GAME) {
-            Bukkit.broadcastMessage("Pre-game: " + preGameCountdown);
-            preGameCountdown--;
+            Bukkit.broadcastMessage("Pre-game: " + preGameTicks);
+            preGameTicks--;
 
-            if (preGameCountdown == 0) {
+            if (preGameTicks <= 0) {
                 this.currentMultiplier = 1;
                 this.crashPoint = this.crashProvider.generateCrashPoint();
                 this.gameState = CrashGameState.RUNNING;
@@ -113,15 +113,19 @@ public class CrashGame extends TickingGame implements MenuProvider {
             if (crashPoint <= currentMultiplier) {
                 Bukkit.broadcastMessage("crashed at " + crashPoint + "x! ");
                 this.gameState = CrashGameState.POST_GAME;
-                this.postGameSeconds = 0;
+                this.postGameTicks = 0;
             }
         }
 
         if (this.gameState == CrashGameState.POST_GAME) {
-            postGameSeconds++;
+            postGameTicks++;
 
-            if (postGameSeconds >= 5) {
+            Bukkit.broadcastMessage("postgame: seconds left: "+(5-(postGameTicks/(20 / tickSpeed))));
+
+            if (postGameTicks >= (20 / tickSpeed)*5) {
                 this.gameState = CrashGameState.PRE_GAME;
+                this.postGameTicks = 0;
+                this.preGameTicks = 5;
             }
         }
     }
@@ -138,7 +142,7 @@ public class CrashGame extends TickingGame implements MenuProvider {
 
         this.running = true;
         this.gameState = CrashGameState.PRE_GAME;
-        this.preGameCountdown = 10;
+        this.preGameTicks = 10;
     }
 
     /**
@@ -152,7 +156,7 @@ public class CrashGame extends TickingGame implements MenuProvider {
         }
 
         this.gameState = CrashGameState.STOPPED;
-        this.preGameCountdown = 0;
+        this.preGameTicks = 0;
         this.running = false;
         // TODO return all bets
         // TODO close all inventory menus
@@ -196,7 +200,7 @@ public class CrashGame extends TickingGame implements MenuProvider {
     /**
      * @return the pre-game countdown.
      */
-    public int getPreGameCountdown() {
-        return preGameCountdown;
+    public int getPreGameTicks() {
+        return preGameTicks;
     }
 }
