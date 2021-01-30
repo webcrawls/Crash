@@ -301,7 +301,7 @@ public class ItemBuilder {
      * Gets the display name of an ItemMeta.
      *
      * @param itemMeta ItemMeta to get display name.
-     * @return
+     * @return Component name.
      */
     public static @NonNull Component getName(final @NonNull ItemMeta itemMeta) {
         if (itemMeta.hasDisplayName()) {
