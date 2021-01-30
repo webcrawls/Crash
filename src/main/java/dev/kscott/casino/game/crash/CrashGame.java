@@ -34,11 +34,11 @@ public class CrashGame extends TickingGame implements MenuProvider {
      */
     public static final String MT_POST_GAME = "crash_post_game";
 
-    private static final int PRE_GAME_LENGTH = 10;
+    private static final double PRE_GAME_LENGTH = 10;
 
-    private static final int POST_GAME_LENGTH = 5;
+    private static final double POST_GAME_LENGTH = 5;
 
-    private static final int MINECRAFT_TICKS_PER_SECOND = 20;
+    private static final double MINECRAFT_TICKS_PER_SECOND = 20;
 
     /**
      * CrashProvider instance.
@@ -99,7 +99,8 @@ public class CrashGame extends TickingGame implements MenuProvider {
         }
 
         if (this.gameState == CrashGameState.PRE_GAME) {
-            Bukkit.broadcastMessage("pregame: seconds left: "+(PRE_GAME_LENGTH - (preGameTicks / (MINECRAFT_TICKS_PER_SECOND / tickSpeed))));
+            Bukkit.broadcastMessage("pre-game: "+getPreGameSecondsLeft()+"s left");
+
             preGameTicks++;
 
             if (preGameTicks >= (MINECRAFT_TICKS_PER_SECOND / tickSpeed)*PRE_GAME_LENGTH) {
@@ -126,9 +127,9 @@ public class CrashGame extends TickingGame implements MenuProvider {
         }
 
         if (this.gameState == CrashGameState.POST_GAME) {
-            postGameTicks++;
+            Bukkit.broadcastMessage("post-game: "+getPostGameSecondsLeft()+"s left");
 
-            Bukkit.broadcastMessage("postgame: seconds left: "+(POST_GAME_LENGTH-(postGameTicks/(MINECRAFT_TICKS_PER_SECOND / tickSpeed))));
+            postGameTicks++;
 
             if (postGameTicks >= (MINECRAFT_TICKS_PER_SECOND / tickSpeed)*POST_GAME_LENGTH) {
                 this.gameState = CrashGameState.PRE_GAME;
@@ -210,5 +211,33 @@ public class CrashGame extends TickingGame implements MenuProvider {
      */
     public int getPreGameTicks() {
         return preGameTicks;
+    }
+
+    /**
+     * @return how many seconds have elapsed since the pre-game phase started.
+     */
+    public double getPreGameSeconds() {
+        return preGameTicks / (MINECRAFT_TICKS_PER_SECOND / tickSpeed);
+    }
+
+    /**
+     * @return how many seconds are left on the pre-game countdown timer.
+     */
+    public double getPreGameSecondsLeft() {
+        return PRE_GAME_LENGTH - getPreGameSeconds();
+    }
+
+    /**
+     * @return how many seconds have elapsed since the post-game phase started.
+     */
+    public double getPostGameSeconds() {
+        return postGameTicks / (MINECRAFT_TICKS_PER_SECOND / tickSpeed);
+    }
+
+    /**
+     * @return how many seconds are left on the post-game countdown timer.
+     */
+    public double getPostGameSecondsLeft() {
+        return POST_GAME_LENGTH - getPostGameSeconds();
     }
 }
