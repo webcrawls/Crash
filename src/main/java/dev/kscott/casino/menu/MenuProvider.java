@@ -18,5 +18,4 @@ public interface MenuProvider {
      * @param menuManager The {@link MenuManager} to register menus with.
      */
     void registerMenus(@NonNull MenuManager menuManager);
-
 }
