@@ -1,11 +1,17 @@
 package dev.kscott.casino.menu;
 
+import com.github.stefvanschie.inventoryframework.gui.type.util.Gui;
 import dev.kscott.casino.game.GameType;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryHolder;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -24,6 +30,11 @@ public class MenuManager {
     private final @NonNull Map<GameType, MenuProvider> providerMap;
 
     /**
+     * Ties {@link GameType}s to a list of open inventories using {@link InventoryHolder}s.
+     */
+    private final @NonNull Map<GameType, List<InventoryHolder>> openInventoryHolderMap;
+
+    /**
      * The menu type for no menu.
      */
     public static final @NonNull String MT_NONE = "none";
@@ -34,6 +45,7 @@ public class MenuManager {
     public MenuManager() {
         this.gameMenuMap = new HashMap<>();
         this.providerMap = new HashMap<>();
+        this.openInventoryHolderMap = new HashMap<>();
     }
 
     /**
@@ -44,6 +56,7 @@ public class MenuManager {
      */
     public void registerProvider(final @NonNull GameType gameType, final @NonNull MenuProvider menuProvider) {
         this.providerMap.put(gameType, menuProvider);
+        menuProvider.registerMenus(this);
     }
 
     /**
@@ -118,7 +131,70 @@ public class MenuManager {
             return;
         }
 
-        menu.showMenu(player);
+        System.out.println(player.getName());
+
+        final @NonNull Gui gui = menu.showMenu(player);
+
+        this.openInventoryHolderMap.computeIfAbsent(gameType, val -> new ArrayList<>());
+
+        final @NonNull List<InventoryHolder> openInventories = this.openInventoryHolderMap.get(gameType);
+
+        openInventories.add(gui);
+    }
+
+    /**
+     * Closes a menu, removing all references to it in internal stores.
+     * <p>
+     * Will do nothing if {@code inventory} is not a {@link GameMenu}.
+     *
+     * @param inventory the inventory to close.
+     */
+    public void closeMenu(final @NonNull Inventory inventory) {
+        final @Nullable InventoryHolder holder = inventory.getHolder();
+
+        if (!(holder instanceof GameMenu)) {
+            return;
+        }
+
+        final @NonNull GameMenu<?> menu = (GameMenu<?>) inventory.getHolder();
+
+        final @NonNull GameType gameType = menu.getGameType();
+
+        final @Nullable List<InventoryHolder> inventoryList = this.openInventoryHolderMap.get(gameType);
+
+        if (inventoryList == null) {
+            return;
+        }
+
+        inventoryList.remove(menu);
+    }
+
+    /**
+     * Updates all menus for a given {@link GameType}.
+     *
+     * @param gameType {@link GameType} to update menus for.
+     */
+    public void updateMenus(final @NonNull GameType gameType) {
+        final @Nullable MenuProvider menuProvider = this.providerMap.get(gameType);
+
+        if (menuProvider == null) {
+            return;
+        }
+
+        final @Nullable List<InventoryHolder> openInventories = this.openInventoryHolderMap.get(gameType);
+
+        if (openInventories == null) {
+            return;
+        }
+
+        for (final @NonNull InventoryHolder holder : new ArrayList<>(openInventories)) {
+            for (final @NonNull HumanEntity entity : new ArrayList<>(holder.getInventory().getViewers())) {
+                 if (entity instanceof Player) {
+                     this.openMenu(((Player) entity), gameType);
+                 }
+
+            }
+        }
     }
 
 }
