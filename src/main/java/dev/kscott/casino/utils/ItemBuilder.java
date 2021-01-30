@@ -289,7 +289,8 @@ public class ItemBuilder {
 
     /**
      * Sets the name of an ItemMeta.
-     * @param itemMeta ItemMeta to set name for.
+     *
+     * @param itemMeta  ItemMeta to set name for.
      * @param component Component to use as the display name.
      */
     public static void setName(final @NonNull ItemMeta itemMeta, final @NonNull Component component) {
@@ -298,6 +299,7 @@ public class ItemBuilder {
 
     /**
      * Gets the display name of an ItemMeta.
+     *
      * @param itemMeta ItemMeta to get display name.
      * @return
      */
