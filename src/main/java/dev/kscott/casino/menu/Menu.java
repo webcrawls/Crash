@@ -37,9 +37,14 @@ public abstract class Menu {
      * Shows this menu to a {@link Player}. Will call {@link this#constructMenu(Player)} before opening.
      *
      * @param viewer the {@link Player} intended to view this {@link Menu}.
+     * @return the opened {@link Gui}.
      */
-    public void showMenu(final @NonNull Player viewer) {
-        constructMenu(viewer).show(viewer);
+    public @NonNull Gui showMenu(final @NonNull Player viewer) {
+        final @NonNull Gui gui = constructMenu(viewer);
+
+        gui.show(viewer);
+
+        return gui;
     }
 
     /**
