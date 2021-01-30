@@ -1,6 +1,8 @@
 package dev.kscott.casino.game;
 
 import com.google.inject.Inject;
+import dev.kscott.casino.menu.MenuManager;
+import dev.kscott.casino.menu.MenuProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -30,14 +32,24 @@ public class GameManager {
     private final Map<TickingGame, BukkitRunnable> tickMap;
 
     /**
+     * {@link MenuManager} instance.
+     */
+    private final @NonNull MenuManager menuManager;
+
+    /**
      * Constructs {@link GameManager}.
      *
      * @param plugin {@link JavaPlugin} reference.
+     * @param menuManager {@link MenuManager} reference.
      */
     @Inject
-    public GameManager(final @NonNull JavaPlugin plugin) {
+    public GameManager(
+            final @NonNull JavaPlugin plugin,
+            final @NonNull MenuManager menuManager
+    ) {
         this.gameMap = new HashMap<>();
         this.plugin = plugin;
+        this.menuManager = menuManager;
         this.tickMap = new HashMap<>();
     }
 
@@ -52,15 +64,31 @@ public class GameManager {
         this.gameMap.put(game.getGameType(), game);
         game.setup();
 
+        if (game instanceof MenuProvider) {
+            this.menuManager.registerProvider(game.getGameType(), (MenuProvider) game);
+        }
+
         if (game instanceof TickingGame) {
             final @NonNull TickingGame tickingGame = (TickingGame) game;
 
             final int tickTime = tickingGame.getTickSpeed();
 
+            boolean isMenuProvider = game instanceof MenuProvider;
+
+            @Nullable MenuProvider menuProvider = game instanceof MenuProvider ? (MenuProvider) game : null;
+
             final @NonNull BukkitRunnable runnable = new BukkitRunnable() {
+
                 @Override
                 public void run() {
                     tickingGame.runGameTick();
+
+                    if (isMenuProvider) {
+                        if (menuProvider.shouldUpdateMenus()) {
+                            menuManager.updateMenus(game.getGameType());
+                            menuProvider.onMenusUpdate();
+                        }
+                    }
                 }
             };
 
