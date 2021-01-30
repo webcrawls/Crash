@@ -108,14 +108,12 @@ public class CrashGame extends TickingGame implements MenuProvider {
             return;
         }
 
+        updateMenus();
+
         if (this.gameState == CrashGameState.PRE_GAME) {
             Bukkit.broadcastMessage("pre-game: " + getPreGameSecondsLeft() + "s left");
 
             preGameTicks++;
-
-            if ((this.getPreGameSeconds() % 1) == 0) {
-                this.updateMenus();
-            }
 
             if (preGameTicks >= (MINECRAFT_TICKS_PER_SECOND / tickSpeed) * PRE_GAME_LENGTH) {
                 this.crashPoint = this.crashProvider.generateCrashPoint();
@@ -149,10 +147,6 @@ public class CrashGame extends TickingGame implements MenuProvider {
             Bukkit.broadcastMessage("post-game: " + getPostGameSecondsLeft() + "s left");
 
             postGameTicks++;
-
-            if ((this.getPostGameSeconds() % 1) == 0) {
-                this.updateMenus();
-            }
 
             if (postGameTicks >= (MINECRAFT_TICKS_PER_SECOND / tickSpeed) * POST_GAME_LENGTH) {
                 this.gameState = CrashGameState.PRE_GAME;
@@ -273,6 +267,20 @@ public class CrashGame extends TickingGame implements MenuProvider {
      */
     public double getPostGameSecondsLeft() {
         return MathUtils.roundToTwoDecimalPoints(POST_GAME_LENGTH - getPostGameSeconds());
+    }
+
+    /**
+     * @return the current game's crash point.
+     */
+    public double getCrashPoint() {
+        return crashPoint;
+    }
+
+    /**
+     * @return the game's current multiplier.
+     */
+    public double getCurrentMultiplier() {
+        return currentMultiplier;
     }
 
     /**
