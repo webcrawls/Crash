@@ -23,7 +23,7 @@ public class CrashPostGameMenu extends GameMenu<CrashGame> {
      * @param game The {@link CrashGame} reference.
      */
     public CrashPostGameMenu(final @NonNull CrashGame game) {
-        super(CrashGame.MT_POST_GAME, GameType.CRASH, game);
+        super(CrashGame.MT_POST_GAME, game);
     }
 
     /**

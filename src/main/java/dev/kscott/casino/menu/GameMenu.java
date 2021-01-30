@@ -25,17 +25,15 @@ public abstract class GameMenu<T extends Game> extends Menu {
      * Constructs {@link GameMenu}.
      *
      * @param id   id of this menu.
-     * @param gameType {@link GameType} associated with this menu.
      * @param game the {@link Game} associated with this menu.
      */
     public GameMenu(
             final @NonNull String id,
-            final @NonNull GameType gameType,
             final @NonNull T game
     ) {
         super(id);
         this.game = game;
-        this.gameType = gameType;
+        this.gameType = game.getGameType();
     }
 
     /**
