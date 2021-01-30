@@ -115,16 +115,17 @@ public class CrashGame extends TickingGame implements MenuProvider {
 
         if (this.gameState == CrashGameState.RUNNING) {
             // thanks kevin u straight g
-            if (crashPoint > currentMultiplier) {
-                currentMultiplier = Math.round((currentMultiplier + (currentMultiplier * 0.03)) * 100.0) / 100.0;
-                Bukkit.broadcastMessage("Running: " + currentMultiplier + "x");
-            }
-
             if (crashPoint <= currentMultiplier) {
                 Bukkit.broadcastMessage("crashed at " + crashPoint + "x! ");
                 this.gameState = CrashGameState.POST_GAME;
                 this.postGameTicks = 0;
             }
+
+            if (crashPoint > currentMultiplier) {
+                currentMultiplier = Math.round((currentMultiplier + (currentMultiplier * 0.03)) * 100.0) / 100.0;
+                Bukkit.broadcastMessage("Running: " + currentMultiplier + "x");
+            }
+
         }
 
         if (this.gameState == CrashGameState.POST_GAME) {
