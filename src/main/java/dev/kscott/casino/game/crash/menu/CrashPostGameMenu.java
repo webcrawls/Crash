@@ -4,7 +4,6 @@ import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
 import com.github.stefvanschie.inventoryframework.gui.type.util.Gui;
 import com.github.stefvanschie.inventoryframework.pane.StaticPane;
-import dev.kscott.casino.game.GameType;
 import dev.kscott.casino.game.crash.CrashGame;
 import dev.kscott.casino.menu.GameMenu;
 import dev.kscott.crash.utils.ItemBuilder;
@@ -43,7 +42,7 @@ public class CrashPostGameMenu extends GameMenu<CrashGame> {
 
         final @NonNull StaticPane fgPane = new StaticPane(4, 2, 1, 1);
         fgPane.addItem(new GuiItem(new ItemBuilder(Material.GREEN_STAINED_GLASS_PANE)
-                .name(this.game.getPostGameSecondsLeft()+"x")
+                .name(this.game.getPostGameSecondsLeft() + "x")
                 .build()), 0, 0);
 
         gui.addPane(fgPane);
