@@ -33,7 +33,7 @@ public class CrashPreGameMenu extends GameMenu<CrashGame> {
      */
     @Override
     public Gui constructMenu(final @NonNull Player player) {
-        final @NonNull ChestGui gui = new ChestGui(6, "Crash Pre Game " + this.game.getPreGameSeconds() + "s");
+        final @NonNull ChestGui gui = new ChestGui(6, "Crash");
 
         gui.setOnGlobalClick(event -> event.setCancelled(true));
 
