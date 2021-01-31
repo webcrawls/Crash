@@ -35,7 +35,8 @@ public class LangConfig extends AbstractConfig {
     }
 
     @Override
-    protected void loadConfigurationValues() {}
+    protected void loadConfigurationValues() {
+    }
 
     /**
      * Gets the MiniMessage value at {@code key} and returns a parsed {@link Component}.
