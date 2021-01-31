@@ -55,7 +55,13 @@ public class CrashProvider {
 
         final long e = (long) Math.pow(2, 52);
 
-        return BigDecimal.valueOf(Math.floor((100.0 * e - h) / (e - h)) / 100).doubleValue();
+        final double crashPoint =  BigDecimal.valueOf(Math.floor((100.0 * e - h) / (e - h)) / 100).doubleValue();
+
+        if (config.getMaxCrashPoint() != -1) {
+            return Math.min(crashPoint, config.getMaxCrashPoint());
+        } else {
+            return crashPoint;
+        }
     }
 
     /**
