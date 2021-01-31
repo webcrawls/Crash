@@ -18,6 +18,11 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 public class CasinoPlugin extends JavaPlugin {
 
     /**
+     * How many times Minecraft should tick, per second.
+     */
+    public static final double MINECRAFT_TICKS_PER_SECOND = 20;
+
+    /**
      * If true, this server isn't running Paper.
      * If false, this server is running Paper or a fork of Paper.
      */

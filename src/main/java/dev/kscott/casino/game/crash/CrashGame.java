@@ -1,5 +1,7 @@
 package dev.kscott.casino.game.crash;
 
+import dev.kscott.casino.CasinoPlugin;
+import dev.kscott.casino.config.LangConfig;
 import dev.kscott.casino.game.GameType;
 import dev.kscott.casino.game.TickingGame;
 import dev.kscott.casino.game.crash.menu.CrashPostGameMenu;
@@ -11,6 +13,7 @@ import dev.kscott.casino.utils.MathUtils;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
@@ -38,12 +41,6 @@ public class CrashGame extends TickingGame implements MenuProvider {
      * The menu id when the Crash game is in it's post game phase.
      */
     public static final String MT_POST_GAME = "crash_post_game";
-
-    private static final double PRE_GAME_LENGTH = 10;
-
-    private static final double POST_GAME_LENGTH = 5;
-
-    private static final double MINECRAFT_TICKS_PER_SECOND = 20;
 
     /**
      * CrashProvider instance.
@@ -87,14 +84,26 @@ public class CrashGame extends TickingGame implements MenuProvider {
     private @MonotonicNonNull BetManager betManager;
 
     /**
+     * Stores the {@link CrashConfig}.
+     */
+    private @MonotonicNonNull CrashConfig config;
+
+    /**
+     * Stores the {@link LangConfig}.
+     */
+    private @MonotonicNonNull LangConfig lang;
+
+    /**
      * Constructs {@link CrashGame}.
      *
      * @param bukkitAudiences {@link BukkitAudiences} reference.
      * @param economy         {@link Economy} reference.
+     * @param plugin          {@link JavaPlugin} reference.
      */
     public CrashGame(
             final @NonNull BukkitAudiences bukkitAudiences,
-            final @NonNull Economy economy
+            final @NonNull Economy economy,
+            final @NonNull JavaPlugin plugin
     ) {
         super("crash", GameType.CRASH, 3);
         this.gameState = CrashGameState.STOPPED;
@@ -104,6 +113,7 @@ public class CrashGame extends TickingGame implements MenuProvider {
         this.crashPoint = 0;
         this.updateMenus = false;
         this.betManager = new BetManager(this, bukkitAudiences, economy);
+        this.config = new CrashConfig(plugin);
     }
 
     /**
@@ -111,7 +121,7 @@ public class CrashGame extends TickingGame implements MenuProvider {
      */
     public void setup() {
         // TODO init betmanager
-        this.crashProvider = new CrashProvider();
+        this.crashProvider = new CrashProvider(this.config);
     }
 
     /**
@@ -129,7 +139,7 @@ public class CrashGame extends TickingGame implements MenuProvider {
 
             preGameTicks++;
 
-            if (preGameTicks >= (MINECRAFT_TICKS_PER_SECOND / tickSpeed) * PRE_GAME_LENGTH) {
+            if (preGameTicks >= (CasinoPlugin.MINECRAFT_TICKS_PER_SECOND / tickSpeed) * this.config.getCountdownTime()) {
                 this.crashPoint = this.crashProvider.generateCrashPoint();
                 this.gameState = CrashGameState.RUNNING;
                 this.currentMultiplier = 1;
@@ -162,7 +172,7 @@ public class CrashGame extends TickingGame implements MenuProvider {
 
             postGameTicks++;
 
-            if (postGameTicks >= (MINECRAFT_TICKS_PER_SECOND / tickSpeed) * POST_GAME_LENGTH) {
+            if (postGameTicks >= (CasinoPlugin.MINECRAFT_TICKS_PER_SECOND / tickSpeed) * this.config.getPostGameTime()) {
                 this.gameState = CrashGameState.PRE_GAME;
                 this.postGameTicks = 0;
                 this.preGameTicks = 0;
@@ -259,28 +269,28 @@ public class CrashGame extends TickingGame implements MenuProvider {
      * @return how many seconds have elapsed since the pre-game phase started. Rounded to two decimal points.
      */
     public double getPreGameSeconds() {
-        return MathUtils.roundToTwoDecimalPoints(preGameTicks / (MINECRAFT_TICKS_PER_SECOND / tickSpeed));
+        return MathUtils.roundToTwoDecimalPoints(preGameTicks / (CasinoPlugin.MINECRAFT_TICKS_PER_SECOND / tickSpeed));
     }
 
     /**
      * @return how many seconds are left on the pre-game countdown timer. Rounded to two decimal points.
      */
     public double getPreGameSecondsLeft() {
-        return MathUtils.roundToTwoDecimalPoints(PRE_GAME_LENGTH - getPreGameSeconds());
+        return MathUtils.roundToTwoDecimalPoints(this.config.getCountdownTime() - getPreGameSeconds());
     }
 
     /**
      * @return how many seconds have elapsed since the post-game phase started. Rounded to two decimal points.
      */
     public double getPostGameSeconds() {
-        return MathUtils.roundToTwoDecimalPoints(postGameTicks / (MINECRAFT_TICKS_PER_SECOND / tickSpeed));
+        return MathUtils.roundToTwoDecimalPoints(postGameTicks / (CasinoPlugin.MINECRAFT_TICKS_PER_SECOND / tickSpeed));
     }
 
     /**
      * @return how many seconds are left on the post-game countdown timer. Rounded to two decimal points.
      */
     public double getPostGameSecondsLeft() {
-        return MathUtils.roundToTwoDecimalPoints(POST_GAME_LENGTH - getPostGameSeconds());
+        return MathUtils.roundToTwoDecimalPoints(this.config.getPostGameTime() - getPostGameSeconds());
     }
 
     /**
