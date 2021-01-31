@@ -1,6 +1,9 @@
 package dev.kscott.casino.game;
 
 import com.google.inject.Inject;
+import com.google.inject.Provider;
+import dev.kscott.casino.config.CasinoConfig;
+import dev.kscott.casino.game.crash.CrashGame;
 import dev.kscott.casino.menu.MenuManager;
 import dev.kscott.casino.menu.MenuProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -45,12 +48,18 @@ public class GameManager {
     @Inject
     public GameManager(
             final @NonNull JavaPlugin plugin,
-            final @NonNull MenuManager menuManager
+            final @NonNull MenuManager menuManager,
+            final @NonNull CasinoConfig config,
+            final @NonNull Provider<CrashGame> crashProvider
     ) {
         this.gameMap = new HashMap<>();
         this.plugin = plugin;
         this.menuManager = menuManager;
         this.tickMap = new HashMap<>();
+
+        if (config.isCrashEnabled()) {
+            this.registerGame(crashProvider.get());
+        }
     }
 
     /**

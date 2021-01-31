@@ -72,10 +72,7 @@ public class CasinoPlugin extends JavaPlugin {
                 new EconomyModule()
         );
 
-        final @NonNull GameManager gameManager = injector.getInstance(GameManager.class);
-
-        final @NonNull CrashGame crash = injector.getInstance(CrashGame.class);
-        gameManager.registerGame(crash);
+        injector.getInstance(GameManager.class);
 
         final @NonNull PlayerJoinListener listener = injector.getInstance(PlayerJoinListener.class);
 
