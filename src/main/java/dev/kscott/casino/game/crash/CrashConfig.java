@@ -2,6 +2,7 @@ package dev.kscott.casino.game.crash;
 
 import dev.kscott.casino.config.AbstractConfig;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 /**
@@ -40,6 +41,11 @@ public class CrashConfig extends AbstractConfig {
     private double crashSpeedMultiplier = 0.03;
 
     /**
+     * The seed of the game.
+     */
+    private @MonotonicNonNull String gameSeed;
+
+    /**
      * Constructs {@link CrashConfig}.
      *
      * @param plugin {@link JavaPlugin} reference.
@@ -59,6 +65,7 @@ public class CrashConfig extends AbstractConfig {
         this.crashSpeedMultiplier = this.rootNode.node("crash-speed-multiplier").getDouble(0.03);
         this.maxBet = this.rootNode.node("max-bet").getInt(50000);
         this.maxCrashPoint = this.rootNode.node("max-crash-point").getDouble(-1D);
+        this.gameSeed = this.rootNode.node("crash-game-seed").getString("YOU_SHOULD_PROBABLY_CHANGE_THIS_RIGHT_NOW_PLEASE_AND_THANK_YOU");
     }
 
     /**
@@ -101,5 +108,12 @@ public class CrashConfig extends AbstractConfig {
      */
     public double getMaxCrashPoint() {
         return maxCrashPoint;
+    }
+
+    /**
+     * @return the game seed.
+     */
+    public @NonNull String getGameSeed() {
+        return gameSeed;
     }
 }
