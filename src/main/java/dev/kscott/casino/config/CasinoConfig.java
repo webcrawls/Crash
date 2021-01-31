@@ -1,5 +1,6 @@
 package dev.kscott.casino.config;
 
+import com.google.inject.Inject;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.spongepowered.configurate.serialize.SerializationException;
@@ -18,6 +19,7 @@ public class CasinoConfig extends AbstractConfig {
      *
      * @param plugin {@link JavaPlugin} reference
      */
+    @Inject
     public CasinoConfig(final @NonNull JavaPlugin plugin) {
         super(plugin, "config.conf");
     }
