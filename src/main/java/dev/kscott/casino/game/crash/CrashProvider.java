@@ -12,6 +12,8 @@ import java.nio.charset.StandardCharsets;
  */
 public class CrashProvider {
 
+    private final @NonNull CrashConfig config;
+
     /**
      * The starting seed of the crash game.
      */
@@ -24,11 +26,14 @@ public class CrashProvider {
 
     /**
      * Constructs CrashProvider.
+     *
+     * @param config the {@link CrashConfig}.
      */
     @SuppressWarnings("UnstableApiUsage")
-    public CrashProvider() {
-        this.gameSeed = Hashing.sha256().hashString("placeholder", StandardCharsets.UTF_8).toString();
-        currentHash = generateHash();
+    public CrashProvider(final @NonNull CrashConfig config) {
+        this.config = config;
+        this.gameSeed = Hashing.sha256().hashString(config.getGameSeed(), StandardCharsets.UTF_8).toString();
+        this.currentHash = generateHash();
     }
 
     /**
@@ -60,7 +65,9 @@ public class CrashProvider {
      */
     @SuppressWarnings("UnstableApiUsage")
     private String generateHash() {
-        currentHash = Hashing.sha256().hashString(currentHash == null ? Double.toString(Math.random() * 1000) : currentHash, StandardCharsets.UTF_8).toString();
+        currentHash = Hashing.sha256().hashString(
+                currentHash == null ? Double.toString(Math.random() * 1000) : currentHash, StandardCharsets.UTF_8
+        ).toString();
         return currentHash;
     }
 
