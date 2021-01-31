@@ -73,8 +73,6 @@ public class GameManager {
 
             final int tickTime = tickingGame.getTickSpeed();
 
-            boolean isMenuProvider = game instanceof MenuProvider;
-
             @Nullable MenuProvider menuProvider = game instanceof MenuProvider ? (MenuProvider) game : null;
 
             final @NonNull BukkitRunnable runnable = new BukkitRunnable() {
@@ -83,7 +81,7 @@ public class GameManager {
                 public void run() {
                     tickingGame.runGameTick();
 
-                    if (isMenuProvider) {
+                    if (menuProvider != null) {
                         if (menuProvider.shouldUpdateMenus()) {
                             menuManager.updateMenus(game.getGameType());
                             menuProvider.onMenusUpdate();
