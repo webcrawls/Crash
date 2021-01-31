@@ -13,7 +13,6 @@ import dev.kscott.casino.menu.MenuProvider;
 import dev.kscott.casino.utils.MathUtils;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.milkbowl.vault.economy.Economy;
-import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -82,12 +81,14 @@ public class CrashGame extends TickingGame implements MenuProvider {
     /**
      * Stores the {@link BetManager} instance.
      */
-    private @MonotonicNonNull BetManager betManager;
+    private @MonotonicNonNull
+    final BetManager betManager;
 
     /**
      * Stores the {@link CrashConfig}.
      */
-    private @MonotonicNonNull CrashConfig config;
+    private @MonotonicNonNull
+    final CrashConfig config;
 
     /**
      * Stores the {@link LangConfig}.

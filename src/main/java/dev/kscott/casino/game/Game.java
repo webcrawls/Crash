@@ -19,7 +19,8 @@ public abstract class Game {
 
     /**
      * Constructs {@link Game}.
-     * @param gameId The id of this {@link Game}.
+     *
+     * @param gameId   The id of this {@link Game}.
      * @param gameType The {@link GameType} of this {@link Game}.
      */
     public Game(

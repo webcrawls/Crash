@@ -42,7 +42,7 @@ public class CrashPostGameMenu extends GameMenu<CrashGame> {
 
         final @NonNull StaticPane fgPane = new StaticPane(4, 2, 1, 1);
         fgPane.addItem(new GuiItem(new ItemBuilder(Material.RED_STAINED_GLASS_PANE)
-                .name("Crashed at "+this.game.getCrashPoint()+"x!")
+                .name("Crashed at " + this.game.getCrashPoint() + "x!")
                 .build()), 0, 0);
 
         gui.addPane(fgPane);

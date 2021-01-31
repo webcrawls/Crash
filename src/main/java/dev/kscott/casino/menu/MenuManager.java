@@ -187,9 +187,9 @@ public class MenuManager {
 
         for (final @NonNull InventoryHolder holder : new ArrayList<>(openInventories)) {
             for (final @NonNull HumanEntity entity : new ArrayList<>(holder.getInventory().getViewers())) {
-                 if (entity instanceof Player) {
-                     this.openMenu(((Player) entity), gameType);
-                 }
+                if (entity instanceof Player) {
+                    this.openMenu(((Player) entity), gameType);
+                }
 
             }
         }

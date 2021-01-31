@@ -39,7 +39,7 @@ public class GameManager {
     /**
      * Constructs {@link GameManager}.
      *
-     * @param plugin {@link JavaPlugin} reference.
+     * @param plugin      {@link JavaPlugin} reference.
      * @param menuManager {@link MenuManager} reference.
      */
     @Inject
