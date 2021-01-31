@@ -1,5 +1,6 @@
 package dev.kscott.casino.game.crash;
 
+import com.google.inject.Inject;
 import dev.kscott.casino.CasinoPlugin;
 import dev.kscott.casino.config.LangConfig;
 import dev.kscott.casino.game.GameType;
@@ -100,6 +101,7 @@ public class CrashGame extends TickingGame implements MenuProvider {
      * @param economy         {@link Economy} reference.
      * @param plugin          {@link JavaPlugin} reference.
      */
+    @Inject
     public CrashGame(
             final @NonNull BukkitAudiences bukkitAudiences,
             final @NonNull Economy economy,
