@@ -35,7 +35,7 @@ public class ItemBuilder {
     /**
      * Construct ItemBuilder with an ItemStack.
      *
-     * @param item ItemStack to base the the new item from
+     * @param item ItemStack to base the new item from
      */
     public ItemBuilder(final @NonNull ItemStack item) {
         this.item = item.clone();
@@ -219,7 +219,7 @@ public class ItemBuilder {
     /**
      * Add a flag to an ItemStack.
      *
-     * @param flag the ItemFlag to add the the ItemStack
+     * @param flag the ItemFlag to add to the ItemStack
      * @return the builder
      */
     public @NonNull ItemBuilder flag(final @NonNull ItemFlag flag) {
