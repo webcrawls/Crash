@@ -57,7 +57,10 @@ public class GameManager {
         this.menuManager = menuManager;
         this.tickMap = new HashMap<>();
 
+        System.out.println("crash: "+config.isCrashEnabled());
+
         if (config.isCrashEnabled()) {
+            plugin.getLogger().info("Loading crash game.");
             this.registerGame(crashProvider.get());
         }
     }

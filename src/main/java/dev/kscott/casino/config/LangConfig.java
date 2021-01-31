@@ -34,6 +34,9 @@ public class LangConfig extends AbstractConfig {
         this.miniMessage = MiniMessage.builder().build();
     }
 
+    @Override
+    protected void loadConfigurationValues() {}
+
     /**
      * Gets the MiniMessage value at {@code key} and returns a parsed {@link Component}.
      *

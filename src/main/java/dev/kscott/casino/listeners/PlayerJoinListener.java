@@ -6,7 +6,9 @@ import dev.kscott.casino.menu.MenuManager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 public class PlayerJoinListener implements Listener {
@@ -19,7 +21,7 @@ public class PlayerJoinListener implements Listener {
     }
 
     @EventHandler
-    public void onJoin(final PlayerJoinEvent event) {
+    public void onJoin(final PlayerInteractEvent event) {
         this.menuManager.openMenu(event.getPlayer(), GameType.CRASH);
     }
 

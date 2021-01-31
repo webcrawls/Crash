@@ -72,9 +72,7 @@ public abstract class AbstractConfig {
      * Loads configuration values.
      * Called during construction and during {@link this#reload()}.
      */
-    protected void loadConfigurationValues() {
-
-    }
+    protected abstract void loadConfigurationValues();
 
     /**
      * Reloads this config.
