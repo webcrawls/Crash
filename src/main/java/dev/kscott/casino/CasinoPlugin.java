@@ -3,12 +3,10 @@ package dev.kscott.casino;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import dev.kscott.casino.game.GameManager;
-import dev.kscott.casino.game.crash.CrashGame;
 import dev.kscott.casino.inject.CommandModule;
 import dev.kscott.casino.inject.EconomyModule;
 import dev.kscott.casino.inject.GameModule;
 import dev.kscott.casino.inject.PluginModule;
-import dev.kscott.casino.listeners.PlayerJoinListener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
@@ -73,10 +71,6 @@ public class CasinoPlugin extends JavaPlugin {
         );
 
         injector.getInstance(GameManager.class);
-
-        final @NonNull PlayerJoinListener listener = injector.getInstance(PlayerJoinListener.class);
-
-        this.getServer().getPluginManager().registerEvents(listener, this);
     }
 
     /**
