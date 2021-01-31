@@ -131,8 +131,6 @@ public class MenuManager {
             return;
         }
 
-        System.out.println(player.getName());
-
         final @NonNull Gui gui = menu.showMenu(player);
 
         this.openInventoryHolderMap.computeIfAbsent(gameType, val -> new ArrayList<>());
