@@ -1,8 +1,8 @@
 package dev.kscott.casino.config;
 
-import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.spongepowered.configurate.serialize.SerializationException;
 
@@ -15,7 +15,7 @@ public class CasinoConfig extends AbstractConfig {
     /**
      * Controls whether or not {@link dev.kscott.casino.game.crash.CrashGame} should be enabled.
      */
-    private boolean crashEnabled = false;
+    private boolean crashEnabled;
 
     /**
      * Constructs the config, and loads it.
@@ -40,14 +40,12 @@ public class CasinoConfig extends AbstractConfig {
         }
 
         this.crashEnabled = loadedGames.contains("crash");
-        this.plugin.getLogger().info("Crash enabled config : "+crashEnabled);
     }
 
     /**
      * @return true if {@link dev.kscott.casino.game.crash.CrashGame} is enabled, false if not.
      */
     public boolean isCrashEnabled() {
-        System.out.println("iscRashedNaW: "+crashEnabled);
-        return crashEnabled;
+        return this.crashEnabled;
     }
 }
