@@ -137,8 +137,6 @@ public class CrashGame extends TickingGame implements MenuProvider {
         updateMenus();
 
         if (this.gameState == CrashGameState.PRE_GAME) {
-            Bukkit.broadcastMessage("pre-game: " + getPreGameSecondsLeft() + "s left");
-
             preGameTicks++;
 
             if (preGameTicks >= (CasinoPlugin.MINECRAFT_TICKS_PER_SECOND / tickSpeed) * this.config.getCountdownTime()) {
@@ -157,11 +155,9 @@ public class CrashGame extends TickingGame implements MenuProvider {
             // thanks kevin u straight g
             if (crashPoint > currentMultiplier) {
                 currentMultiplier = Math.round((currentMultiplier + (currentMultiplier * 0.03)) * 100.0) / 100.0;
-                Bukkit.broadcastMessage("Running: " + currentMultiplier + "x");
             }
 
             if (crashPoint <= currentMultiplier) {
-                Bukkit.broadcastMessage("crashed at " + crashPoint + "x! ");
                 this.gameState = CrashGameState.POST_GAME;
                 this.postGameTicks = 0;
             }
@@ -170,8 +166,6 @@ public class CrashGame extends TickingGame implements MenuProvider {
         }
 
         if (this.gameState == CrashGameState.POST_GAME) {
-            Bukkit.broadcastMessage("post-game: " + getPostGameSecondsLeft() + "s left");
-
             postGameTicks++;
 
             if (postGameTicks >= (CasinoPlugin.MINECRAFT_TICKS_PER_SECOND / tickSpeed) * this.config.getPostGameTime()) {
