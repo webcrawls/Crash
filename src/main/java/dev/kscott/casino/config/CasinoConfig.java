@@ -2,7 +2,6 @@ package dev.kscott.casino.config;
 
 import com.google.inject.Inject;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.spongepowered.configurate.serialize.SerializationException;
 
