@@ -2,6 +2,8 @@ package dev.kscott.casino;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import dev.kscott.casino.command.CasinoCommand;
+import dev.kscott.casino.config.CasinoConfig;
 import dev.kscott.casino.game.GameManager;
 import dev.kscott.casino.inject.CommandModule;
 import dev.kscott.casino.inject.EconomyModule;
@@ -71,6 +73,7 @@ public class CasinoPlugin extends JavaPlugin {
         );
 
         injector.getInstance(GameManager.class);
+        injector.getInstance(CasinoCommand.class);
     }
 
     /**
