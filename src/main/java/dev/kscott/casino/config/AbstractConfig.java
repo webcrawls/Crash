@@ -23,12 +23,12 @@ public abstract class AbstractConfig {
     /**
      * The {@link JavaPlugin} reference.
      */
-    private final @NonNull JavaPlugin plugin;
+    protected final @NonNull JavaPlugin plugin;
 
     /**
      * The filename of this config.
      */
-    private final @NonNull String configurationFileName;
+    protected final @NonNull String configurationFileName;
 
     /**
      * Constructs the config, and loads it.
