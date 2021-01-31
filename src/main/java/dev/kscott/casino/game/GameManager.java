@@ -42,8 +42,10 @@ public class GameManager {
     /**
      * Constructs {@link GameManager}.
      *
-     * @param plugin      {@link JavaPlugin} reference.
-     * @param menuManager {@link MenuManager} reference.
+     * @param plugin        {@link JavaPlugin} reference.
+     * @param menuManager   {@link MenuManager} reference.
+     * @param config        {@link CasinoConfig} reference.
+     * @param crashProvider a {@link Provider} for {@link CrashGame}.
      */
     @Inject
     public GameManager(
@@ -57,10 +59,7 @@ public class GameManager {
         this.menuManager = menuManager;
         this.tickMap = new HashMap<>();
 
-        System.out.println("crash: "+config.isCrashEnabled());
-
         if (config.isCrashEnabled()) {
-            plugin.getLogger().info("Loading crash game.");
             this.registerGame(crashProvider.get());
         }
     }
