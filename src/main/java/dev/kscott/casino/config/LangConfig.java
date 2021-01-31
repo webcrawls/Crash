@@ -25,7 +25,10 @@ public class LangConfig extends AbstractConfig {
      * @param plugin                {@link JavaPlugin} reference
      * @param configurationFileName the filename of this config.
      */
-    public LangConfig(final @NonNull JavaPlugin plugin, final @NonNull String configurationFileName) {
+    public LangConfig(
+            final @NonNull JavaPlugin plugin,
+            final @NonNull String configurationFileName
+    ) {
         super(plugin, configurationFileName);
 
         this.miniMessage = MiniMessage.builder().build();
