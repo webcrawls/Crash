@@ -1,87 +1,45 @@
-import org.apache.tools.ant.filters.ReplaceTokens
-
 plugins {
-    id("java")
-    id("java-library")
-    id("com.github.johnrengelman.shadow") version("6.1.0")
-    // TODO uncomment this
-//    id("checkstyle")
+    kotlin("jvm") version "2.1.0-Beta2"
+    id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
-group = "dev.kscott"
+group = "sh.kaden.crash"
 version = "2.0.0"
-
-configure<JavaPluginConvention> {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = sourceCompatibility
-}
 
 repositories {
     mavenCentral()
-    maven {
+    maven("https://repo.papermc.io/repository/maven-public/") {
         name = "papermc-repo"
-        url = uri("https://papermc.io/repo/repository/maven-public/")
     }
-    maven {
+    maven("https://oss.sonatype.org/content/groups/public/") {
         name = "sonatype"
-        url = uri("https://oss.sonatype.org/content/groups/public/")
-    }
-    maven {
-        name = "jitpack"
-        url = uri("https://jitpack.io")
     }
 }
 
 dependencies {
-    compileOnlyApi("org.checkerframework:checker-qual:3.5.0")
-    compileOnlyApi("com.google.guava:guava:21.0")
-
-    compileOnly("com.destroystokyo.paper:paper-api:1.16.4-R0.1-SNAPSHOT")
-    compileOnly("com.github.MilkBowl:VaultAPI:1.7")
-
-    implementation("com.google.inject:guice:5.0.0-BETA-1")
-    implementation("net.kyori:adventure-platform-bukkit:4.0.0-SNAPSHOT")
-    implementation("cloud.commandframework:cloud-paper:1.4.0")
-    implementation("org.spongepowered:configurate-hocon:4.0.0")
-    implementation("net.kyori:adventure-text-minimessage:4.0.0-SNAPSHOT")
-    implementation("com.github.stefvanschie.inventoryframework:IF:0.9.1")
+    compileOnly("io.papermc.paper:paper-api:1.21.1-R0.1-SNAPSHOT")
+    implementation("com.github.stefvanschie.inventoryframework:IF:0.10.17")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 }
 
-tasks {
-    build {
-        dependsOn(shadowJar)
-    }
+val targetJavaVersion = 21
+kotlin {
+    jvmToolchain(targetJavaVersion)
+}
 
-    shadowJar {
-        fun relocates(vararg dependencies: String) {
-            dependencies.forEach {
-                val split = it.split('.')
-                val name = split.last()
-                relocate(it, "${rootProject.group}.dependencies.$name")
-            }
-        }
+tasks.build {
+    dependsOn("shadowJar")
+}
 
-        archiveFileName.set("Casino-${archiveVersion.get()}.jar")
+tasks.shadowJar {
+    relocate("com.github.stefvanschie.inventoryframework", "sh.kaden.crash.inventoryframework")
+}
 
-        dependencies {
-            exclude(dependency("com.google.guava:"))
-            exclude(dependency("com.google.errorprone:"))
-        }
-
-        relocates(
-                "com.github.benmanes.caffeine",
-                "com.google.inject",
-                "org.antlr",
-                "org.slf4j",
-                "org.spongepowered.configurate",
-                "cloud.commandframework",
-                "net.kyori.adventure",
-                "net.kyori.examination",
-                "com.github.stevanschie.inventoryframework"
-        )
-    }
-
-    processResources {
-        filter<ReplaceTokens>("tokens" to mapOf("version" to project.version))
+tasks.processResources {
+    val props = mapOf("version" to version)
+    inputs.properties(props)
+    filteringCharset = "UTF-8"
+    filesMatching("paper-plugin.yml") {
+        expand(props)
     }
 }
