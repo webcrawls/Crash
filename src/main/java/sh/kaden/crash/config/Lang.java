@@ -8,7 +8,7 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.spongepowered.configurate.ConfigurateException;
 import org.spongepowered.configurate.ConfigurationNode;
-import org.spongepowered.configurate.hocon.HoconConfigurationLoader;
+import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -21,9 +21,6 @@ import java.util.Map;
  */
 public class Lang {
 
-    /**
-     * JavaPlugin reference.
-     */
     private final @NonNull JavaPlugin plugin;
 
     /**
@@ -31,27 +28,16 @@ public class Lang {
      */
     private @Nullable ConfigurationNode root;
 
-    /**
-     * MiniMessage reference.
-     */
-    private final @NonNull MiniMessage miniMessage;
-
-    /**
-     * Constructs the lang.
-     *
-     * @param plugin {@link this#plugin}
-     */
     public Lang(final @NonNull JavaPlugin plugin) {
-        this.miniMessage = MiniMessage.get();
         this.plugin = plugin;
 
         // Save config to file if it doesn't already exist
-        if (!Files.exists(Path.of(this.plugin.getDataFolder().getAbsolutePath(), "lang.conf"))) {
-            plugin.saveResource("lang.conf", false);
+        if (!Files.exists(Path.of(this.plugin.getDataFolder().getAbsolutePath(), "lang.yml"))) {
+            plugin.saveResource("lang.yml", false);
         }
 
-        final HoconConfigurationLoader loader = HoconConfigurationLoader.builder()
-                .path(Paths.get(plugin.getDataFolder().getAbsolutePath(), "lang.conf"))
+        final YamlConfigurationLoader loader = YamlConfigurationLoader.builder()
+                .path(Paths.get(plugin.getDataFolder().getAbsolutePath(), "lang.yml"))
                 .build();
 
         try {
@@ -95,7 +81,7 @@ public class Lang {
             value = "<red>ERR</red>";
         }
 
-        return LegacyComponentSerializer.legacySection().serialize(miniMessage.parse(value));
+        return LegacyComponentSerializer.legacySection().serialize(MiniMessage.miniMessage().deserialize(value));
     }
 
     /**
@@ -125,7 +111,7 @@ public class Lang {
             value = value.replace(entry.getKey(), entry.getValue());
         }
 
-        return this.miniMessage.parse(value);
+        return MiniMessage.miniMessage().deserialize(value);
     }
 
     /**

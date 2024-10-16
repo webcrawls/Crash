@@ -1,95 +1,40 @@
 package sh.kaden.crash.game.crash;
 
-import cloud.commandframework.paper.PaperCommandManager;
 import sh.kaden.crash.config.Config;
 import sh.kaden.crash.config.Lang;
 import sh.kaden.crash.config.MenuConfig;
 import sh.kaden.crash.menu.MenuManager;
 import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.UUID;
 
-/**
- * Manages the game state.
- */
 public class CrashManager {
 
-    /**
-     * JavaPlugin reference.
-     */
     private final @NonNull JavaPlugin plugin;
-
-    /**
-     * CrashProvider reference.
-     */
     private final @NonNull CrashProvider crashProvider;
-
-    /**
-     * PaperCommandManager reference.
-     */
-    private final @NonNull PaperCommandManager<CommandSender> commandManager;
-
-    /**
-     * Config reference.
-     */
     private final @NonNull Config config;
-
-    /**
-     * MenuManager reference.
-     */
     private final @NonNull MenuManager menuManager;
-
-    /**
-     * BetManager reference.
-     */
     private final @NonNull BetManager betManager;
-
-    /**
-     * The state of the game. ({@link GameState})
-     */
     private @NonNull GameState gameState;
-
-    /**
-     * The current crash multiplier.
-     */
     private double currentMultiplier;
-
-    /**
-     * The crash point.
-     */
     private double crashPoint;
-
-    /**
-     * The countdown variable for pre-game.
-     */
     private int preGameCountdown;
 
-    /**
-     * Constructs GameManager.
-     *
-     * @param plugin        JavaPlugin reference.
-     * @param crashProvider CrashProvider reference.
-     * @param config        Config reference.
-     * @param lang          Lang reference.
-     */
     public CrashManager(
             final @NonNull JavaPlugin plugin,
             final @NonNull CrashProvider crashProvider,
-            final @NonNull PaperCommandManager<CommandSender> commandManager,
             final @NonNull Config config,
             final @NonNull Lang lang,
             final @NonNull MenuConfig menuConfig
     ) {
         this.plugin = plugin;
         this.crashProvider = crashProvider;
-        this.commandManager = commandManager;
         this.config = config;
 
-        this.menuManager = new MenuManager(plugin, commandManager, this, config, lang, menuConfig);
+        this.menuManager = new MenuManager(plugin, this, config, lang, menuConfig);
         this.betManager = new BetManager(plugin, this, lang);
 
         this.currentMultiplier = 0;
@@ -107,9 +52,6 @@ public class CrashManager {
         }
     }
 
-    /**
-     * Starts the game.
-     */
     public void startGame() {
         if (this.gameState != GameState.NOT_RUNNING) {
             throw new RuntimeException("GameManager#startGame was called, but the game is already running!");
@@ -120,9 +62,6 @@ public class CrashManager {
         runPreGame();
     }
 
-    /**
-     * Runs the pre-game.
-     */
     private void runPreGame() {
         this.gameState = GameState.PRE_GAME;
 
@@ -142,9 +81,6 @@ public class CrashManager {
         }.runTaskTimer(plugin, 0, 20);
     }
 
-    /**
-     * Runs the game.
-     */
     private void runGame() {
         this.gameState = GameState.RUNNING;
 
@@ -172,9 +108,6 @@ public class CrashManager {
         }.runTaskTimer(plugin, 0, config.getGameTick());
     }
 
-    /**
-     * Runs the post-game.
-     */
     private void runPostGame() {
         this.gameState = GameState.POST_GAME;
 
@@ -188,9 +121,6 @@ public class CrashManager {
         }.runTaskLater(plugin, 20 * config.getPostGameTime());
     }
 
-    /**
-     * Pay out bets for players.
-     */
     private void payout() {
         for (final @NonNull UUID uuid : this.betManager.getCashedOutPlayers()) {
             betManager.cashout(Bukkit.getOfflinePlayer(uuid));

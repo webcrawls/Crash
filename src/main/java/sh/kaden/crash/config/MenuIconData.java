@@ -3,8 +3,6 @@ package sh.kaden.crash.config;
 import sh.kaden.crash.utils.ItemBuilder;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.ComponentSerializer;
-import net.kyori.adventure.text.serializer.bungeecord.BungeeComponentSerializer;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.md_5.bungee.api.chat.BaseComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -110,8 +108,6 @@ public class MenuIconData {
     }
 
     public static ItemStack constructItemStack(final @NonNull Material material, final @Nullable Component name, final @Nullable List<Component> lore) {
-        final @NonNull ComponentSerializer<Component, Component, BaseComponent[]> serializer = BungeeComponentSerializer.get();
-
         final @NonNull ItemStack itemStack = new ItemStack(material);
 
         if (name == null && lore == null) {

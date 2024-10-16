@@ -6,6 +6,9 @@ import cloud.commandframework.arguments.standard.StringArgument;
 import cloud.commandframework.context.CommandContext;
 import cloud.commandframework.paper.PaperCommandManager;
 import com.google.inject.Inject;
+import io.papermc.paper.command.brigadier.BasicCommand;
+import io.papermc.paper.command.brigadier.CommandSourceStack;
+import org.jspecify.annotations.Nullable;
 import sh.kaden.crash.config.Config;
 import sh.kaden.crash.config.Lang;
 import sh.kaden.crash.exception.NotEnoughBalanceException;
@@ -18,86 +21,29 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * Handles /crash commands.
- */
-public class CrashCommand {
+public class CrashCommand implements BasicCommand {
 
-    /**
-     * PaperCommandManager reference.
-     */
-    private final @NonNull PaperCommandManager<CommandSender> commandManager;
-
-    /**
-     * CrashProvider reference.
-     */
     private final @NonNull CrashProvider crashProvider;
-
-    /**
-     * GameManager reference.
-     */
     private final @NonNull CrashManager crashManager;
-
-    /**
-     * Holds a List of String to be used for /crash command completions.
-     */
     private final @NonNull List<String> commandCompletions;
-
-    private final @NonNull BukkitAudiences audiences;
-
     private final @NonNull Lang lang;
-
     private final @NonNull Config config;
 
-    /**
-     * Constructs CrashCommand.
-     *
-     * @param commandManager PaperCommandManager reference.
-     */
-    @Inject
     public CrashCommand(
-            final @NonNull PaperCommandManager<CommandSender> commandManager,
             final @NonNull CrashProvider crashProvider,
             final @NonNull CrashManager crashManager,
             final @NonNull Lang lang,
             final @NonNull JavaPlugin plugin,
             final @NonNull Config config
     ) {
-        this.commandManager = commandManager;
         this.crashManager = crashManager;
         this.crashProvider = crashProvider;
         this.lang = lang;
-        this.audiences = BukkitAudiences.create(plugin);
         this.config = config;
-
-        this.commandCompletions = new ArrayList<>();
-        commandCompletions.add("history");
-        commandCompletions.add("1");
-        commandCompletions.add("2");
-        commandCompletions.add("3");
-        commandCompletions.add("4");
-        commandCompletions.add("5");
-        commandCompletions.add("6");
-        commandCompletions.add("7");
-        commandCompletions.add("8");
-        commandCompletions.add("9");
-        commandCompletions.add("10");
-
-        final Command.Builder<CommandSender> builder = this.commandManager.commandBuilder("crash");
-
-        final @NonNull CommandArgument<CommandSender, String> argument = StringArgument.<CommandSender>newBuilder("argument")
-                .asOptional()
-                .withSuggestionsProvider((ctx, arg) -> commandCompletions)
-                .build();
-
-        this.commandManager.command(
-                builder.handler(this::handleCrash)
-                        .argument(argument)
-                        .permission("crash.command.use")
-        );
     }
 
     /**
@@ -151,4 +97,23 @@ public class CrashCommand {
     }
 
 
+    @Override
+    public void execute(CommandSourceStack commandSourceStack, String[] strings) {
+
+    }
+
+    @Override
+    public Collection<String> suggest(CommandSourceStack commandSourceStack, String[] args) {
+        return BasicCommand.super.suggest(commandSourceStack, args);
+    }
+
+    @Override
+    public boolean canUse(CommandSender sender) {
+        return BasicCommand.super.canUse(sender);
+    }
+
+    @Override
+    public @Nullable String permission() {
+        return BasicCommand.super.permission();
+    }
 }

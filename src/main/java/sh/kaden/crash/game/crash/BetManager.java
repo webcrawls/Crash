@@ -21,15 +21,9 @@ import java.util.UUID;
  */
 public class BetManager {
 
-    /**
-     * Vault Economy API.
-     */
     private final @NonNull Economy economy;
-
-    /**
-     * GameManager reference.
-     */
     private final @NonNull CrashManager crashManager;
+    private final @NonNull Lang lang;
 
     /**
      * The Map which stores the player bets.
@@ -46,21 +40,6 @@ public class BetManager {
      */
     private final @NonNull Map<UUID, Double> cashoutMap;
 
-    /**
-     * BukkitAudiences instance.
-     */
-    private final @NonNull BukkitAudiences audiences;
-
-    /**
-     * Lang reference.
-     */
-    private final @NonNull Lang lang;
-
-    /**
-     * Constructs BetManager.
-     *
-     * @param crashManager GameManager reference.
-     */
     public BetManager(
             final @NonNull JavaPlugin plugin,
             final @NonNull CrashManager crashManager,
@@ -68,7 +47,6 @@ public class BetManager {
     ) {
         this.crashManager = crashManager;
         this.lang = lang;
-        this.audiences = BukkitAudiences.create(plugin);
         this.betMap = new HashMap<>();
         this.queuedBetMap = new HashMap<>();
         this.cashoutMap = new HashMap<>();
@@ -104,9 +82,9 @@ public class BetManager {
             economy.withdrawPlayer(player, bet);
             if (crashManager.getGameState() == CrashManager.GameState.RUNNING) {
                 this.queuedBetMap.put(player.getUniqueId(), bet);
-                audiences.player(player).sendMessage(lang.c("bet-queued-message", Map.of("{money}", Lang.formatCurrency(bet))));
+                player.sendMessage(lang.c("bet-queued-message", Map.of("{money}", Lang.formatCurrency(bet))));
             } else {
-                audiences.player(player).sendMessage(lang.c("bet-message", Map.of("{money}", Lang.formatCurrency(bet))));
+                player.sendMessage(lang.c("bet-message", Map.of("{money}", Lang.formatCurrency(bet))));
                 this.betMap.put(player.getUniqueId(), bet);
             }
         } else {
@@ -189,7 +167,7 @@ public class BetManager {
             if (cashout != 0) {
                 economy.depositPlayer(player, cashout);
                 if (player.isOnline()) {
-                    audiences.player((Player) player).sendMessage(lang.c("cashout-message", Map.of("{money}", Lang.formatCurrency(cashout))));
+                    ((Player) player).sendMessage(lang.c("cashout-message", Map.of("{money}", Lang.formatCurrency(cashout))));
                 }
             }
             removeBet(player);

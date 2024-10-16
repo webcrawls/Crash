@@ -12,8 +12,8 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import org.spongepowered.configurate.ConfigurateException;
 import org.spongepowered.configurate.ConfigurationNode;
-import org.spongepowered.configurate.hocon.HoconConfigurationLoader;
 import org.spongepowered.configurate.serialize.SerializationException;
+import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
 
 import java.io.File;
 import java.nio.file.Paths;
@@ -24,20 +24,8 @@ import java.util.*;
  */
 public class MenuConfig {
 
-    /**
-     * The MenuIconData to use as a placeholder.
-     */
     private final @NonNull MenuIconData placeholderIcon;
-
-    /**
-     * The MenuIconData to use as a placeholder.
-     */
     private final @NonNull RunningMenuIconData runningPlaceholderIcon;
-
-    /**
-     * MiniMessage reference.
-     */
-    private final @NonNull MiniMessage miniMessage = MiniMessage.get();
 
     /**
      * A Map of Integer to MenuIconData, where Integer is the countdown second, and the MenuIconData is the icon to display for that second.
@@ -118,8 +106,8 @@ public class MenuConfig {
      * Loads the config into the {@link this.root} node.
      */
     private void loadConfig() {
-        final HoconConfigurationLoader loader = HoconConfigurationLoader.builder()
-                .path(Paths.get(plugin.getDataFolder().getAbsolutePath(), "menu.conf"))
+        final YamlConfigurationLoader loader = YamlConfigurationLoader.builder()
+                .path(Paths.get(plugin.getDataFolder().getAbsolutePath(), "menu.yml"))
                 .build();
 
         try {
@@ -137,8 +125,8 @@ public class MenuConfig {
         this.preGameCountdownIcons.clear();
         this.preGameOtherBetsList = this.root.node("pre-game-menu").node("options").node("other-bets-list").node("enabled").getBoolean(true);
         this.preGameOtherBetsAmount = this.root.node("pre-game-menu").node("options").node("other-bets-list").node("amount").getInt(5);
-        this.otherBetsListHeader = this.miniMessage.parse(this.root.node("other-bets-list").node("header").getString("")).decoration(TextDecoration.ITALIC, false);
-        this.otherBetsListFormat = this.miniMessage.parse(this.root.node("other-bets-list").node("bet").getString("")).decoration(TextDecoration.ITALIC, false);
+        this.otherBetsListHeader = MiniMessage.miniMessage().deserialize(this.root.node("other-bets-list").node("header").getString("")).decoration(TextDecoration.ITALIC, false);
+        this.otherBetsListFormat = MiniMessage.miniMessage().deserialize(this.root.node("other-bets-list").node("bet").getString("")).decoration(TextDecoration.ITALIC, false);
         final @NonNull ConfigurationNode countdownNode = this.root.node("pre-game-menu").node("countdown-icon");
         if (countdownNode.virtual()) {
             this.plugin.getLogger().warning("There are no countdown icons loaded! You may want to review your configuration.");
@@ -193,14 +181,14 @@ public class MenuConfig {
                 @Nullable List<Component> loreComponent = null;
 
                 if (name != null) {
-                    nameComponent = this.miniMessage.parse(name).decoration(TextDecoration.ITALIC, false);
+                    nameComponent = MiniMessage.miniMessage().deserialize(name).decoration(TextDecoration.ITALIC, false);
                 }
 
                 if (lore != null) {
                     loreComponent = new ArrayList<>();
 
                     for (final @NonNull String loreString : lore) {
-                        loreComponent.add(miniMessage.parse(loreString).decoration(TextDecoration.ITALIC, false));
+                        loreComponent.add(MiniMessage.miniMessage().deserialize(loreString).decoration(TextDecoration.ITALIC, false));
                     }
                 }
 
@@ -278,14 +266,14 @@ public class MenuConfig {
                 @Nullable List<Component> loreIfBetComponent = null;
 
                 if (name != null) {
-                    nameComponent = this.miniMessage.parse(name).decoration(TextDecoration.ITALIC, false);
+                    nameComponent = MiniMessage.miniMessage().deserialize(name).decoration(TextDecoration.ITALIC, false);
                 }
 
                 if (lore != null) {
                     loreComponent = new ArrayList<>();
 
                     for (final @NonNull String loreString : lore) {
-                        loreComponent.add(miniMessage.parse(loreString).decoration(TextDecoration.ITALIC, false));
+                        loreComponent.add(MiniMessage.miniMessage().deserialize(loreString).decoration(TextDecoration.ITALIC, false));
                     }
                 }
 
@@ -293,7 +281,7 @@ public class MenuConfig {
                     loreIfBetComponent = new ArrayList<>();
 
                     for (final @NonNull String loreString : loreIfBet) {
-                        loreIfBetComponent.add(miniMessage.parse(loreString).decoration(TextDecoration.ITALIC, false));
+                        loreIfBetComponent.add(MiniMessage.miniMessage().deserialize(loreString).decoration(TextDecoration.ITALIC, false));
                     }
                 }
 

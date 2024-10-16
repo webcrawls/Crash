@@ -5,7 +5,7 @@ import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import org.spongepowered.configurate.ConfigurateException;
-import org.spongepowered.configurate.hocon.HoconConfigurationLoader;
+import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
 
 import java.io.File;
 import java.nio.file.Paths;
@@ -44,10 +44,6 @@ public class Config {
      * How fast will the multiplier increase?
      */
     private double crashSpeedMultiplier = 0.03;
-
-    /**
-     * JavaPlugin reference.
-     */
     private final @NonNull JavaPlugin plugin;
 
     /**
@@ -64,8 +60,8 @@ public class Config {
         this.plugin = plugin;
 
         // Save config to file if it doesn't already exist
-        if (!new File(this.plugin.getDataFolder(), "config.conf").exists()) {
-            plugin.saveResource("config.conf", false);
+        if (!new File(this.plugin.getDataFolder(), "config.yml").exists()) {
+            plugin.saveResource("config.yml", false);
         }
 
         // Load the config
@@ -77,8 +73,8 @@ public class Config {
      * Loads the config into the {@link this.root} node.
      */
     private void loadConfig() {
-        final HoconConfigurationLoader loader = HoconConfigurationLoader.builder()
-                .path(Paths.get(plugin.getDataFolder().getAbsolutePath(), "config.conf"))
+        final YamlConfigurationLoader loader = YamlConfigurationLoader.builder()
+                .path(Paths.get(plugin.getDataFolder().getAbsolutePath(), "config.yml"))
                 .build();
 
         try {

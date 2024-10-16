@@ -25,7 +25,6 @@ public class CrashProvider {
     /**
      * Constructs CrashProvider.
      */
-    @SuppressWarnings("UnstableApiUsage")
     public CrashProvider() {
         this.gameSeed = Hashing.sha256().hashString("placeholder", StandardCharsets.UTF_8).toString();
         currentHash = generateHash();
@@ -36,9 +35,9 @@ public class CrashProvider {
      *
      * @return crash point as a {@code double}.
      */
-    @SuppressWarnings("UnstableApiUsage")
     public double generateCrashPoint() {
-        final @NonNull String hash = Hashing.hmacSha256(generateHash().getBytes(StandardCharsets.UTF_8))
+        final @NonNull String hash = Hashing
+                .hmacSha256(generateHash().getBytes(StandardCharsets.UTF_8))
                 .hashString(gameSeed, StandardCharsets.UTF_8).toString();
 
         // 1/51 games will auto crash at 1.
@@ -58,7 +57,6 @@ public class CrashProvider {
      *
      * @return hash as {@link String}.
      */
-    @SuppressWarnings("UnstableApiUsage")
     private String generateHash() {
         currentHash = Hashing.sha256().hashString(currentHash == null ? Double.toString(Math.random() * 1000) : currentHash, StandardCharsets.UTF_8).toString();
         return currentHash;

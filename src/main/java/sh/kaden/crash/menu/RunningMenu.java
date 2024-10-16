@@ -2,7 +2,6 @@ package sh.kaden.crash.menu;
 
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import com.github.stefvanschie.inventoryframework.pane.StaticPane;
-import dev.kscott.crash.config.*;
 import sh.kaden.crash.config.*;
 import sh.kaden.crash.game.crash.CrashManager;
 import sh.kaden.crash.utils.ItemBuilder;

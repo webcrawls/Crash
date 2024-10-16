@@ -1,7 +1,6 @@
 package sh.kaden.crash.utils;
 
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.serializer.bungeecord.BungeeComponentSerializer;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -297,15 +296,9 @@ public class ItemBuilder {
     }
 
     /**
-     * Gets the display name of an ItemMeta.
-     * @param itemMeta ItemMeta to get display name.
-     * @return
+     * Returns the display name of an ItemMeta.
      */
-    public static @NonNull Component getName(final @NonNull ItemMeta itemMeta) {
-        if (itemMeta.hasDisplayName()) {
-            return BungeeComponentSerializer.get().deserialize(itemMeta.getDisplayNameComponent());
-        }
-
-        return Component.text("");
+    public static @NonNull Component getName(final @NonNull ItemMeta meta) {
+        return Objects.requireNonNullElse(meta.displayName(), Component.empty());
     }
 }
